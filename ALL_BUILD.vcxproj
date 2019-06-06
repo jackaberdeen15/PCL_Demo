@@ -160,12 +160,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\Jack\source\repos\pcl_visualizer\build\ZERO_CHECK.vcxproj">
-      <Project>{F62C216D-7052-3926-8A4C-FD3C8106DF9C}</Project>
-      <Name>ZERO_CHECK</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </ProjectReference>
     <ProjectReference Include="C:\Users\Jack\source\repos\pcl_visualizer\build\pcl_visualizer_demo.vcxproj">
       <Project>{C83A0C7E-AEB3-329D-A0F7-5C3495519973}</Project>
       <Name>pcl_visualizer_demo</Name>
