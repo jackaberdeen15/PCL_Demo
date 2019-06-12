@@ -4,6 +4,9 @@
     <ClCompile Include="C:\Users\Jack\source\repos\pcl_visualizer\pcl_visualizer_demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VisualiserFuncs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\Jack\source\repos\pcl_visualizer\CMakeLists.txt" />
@@ -12,5 +15,16 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{C758BB23-5F98-3172-9F6D-FD73FB532647}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{a43401a5-5a38-46b2-b136-c5a4b847e37a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="VisualiserAttempt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicGrabber.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

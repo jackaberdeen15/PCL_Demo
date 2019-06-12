@@ -326,6 +326,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\Users\Jack\source\repos\pcl_visualizer\pcl_visualizer_demo.cpp" />
+    <ClCompile Include="VisualiserFuncs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BasicGrabber.h" />
+    <ClInclude Include="VisualiserAttempt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
