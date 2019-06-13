@@ -7,6 +7,9 @@
     <ClCompile Include="VisualiserFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ICP_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\Jack\source\repos\pcl_visualizer\CMakeLists.txt" />

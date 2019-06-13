@@ -101,7 +101,7 @@ private:
 
 	void save_cloud(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud) {
 		stringstream s;
-		s << "cloud_1_" << num_s1++ << ".pcd"; //
+		s << "cloud_2_" << num_s1++ << ".pcd"; //
 		cout << "Entered callback 'Save' " << std::endl;
 		io::savePCDFileASCII(s.str(), *cloud);
 	}
@@ -111,21 +111,25 @@ public:
 
 	int run()
 	{
+		cout << "Entered run()." << endl;
+
 		//create new grabber
 		Grabber* interface = new io::OpenNI2Grabber();
 
+		cout << "setting up callbacks." << endl;
 		//make callback function from member function
-		boost::function<void(const PointCloud<T>::ConstPtr&)>f = boost::bind(&BasicOpenNI2Processor::cloud_cb_, this, _1);
+		boost::function<void(const PointCloud<T>::ConstPtr&) > f = boost::bind(&BasicOpenNI2Processor::cloud_cb_, this, _1);
 
-		boost::function<void(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&) > f_save = boost::bind(&BasicOpenNI2Processor::save_cloud, this, _1);
+		boost::function<void(const PointCloud<T>::ConstPtr&) > f_save = boost::bind(&BasicOpenNI2Processor::save_cloud, this, _1);
 		
+		cout << "registering callbacks." << endl;
 		//connect callback function for desired signal
 		boost::signals2::connection c = interface->registerCallback(f);
 
 		boost::signals2::connection c_save = interface->registerCallback(f_save);
 
 		//boost::signals2::connection c_save2 = interface->
-
+		cout << "starting interface" << endl;
 		//start recieving point clouds
 		interface->start();
 
