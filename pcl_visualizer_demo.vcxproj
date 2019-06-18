@@ -325,12 +325,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\Jack\source\repos\pcl_visualizer\pcl_visualizer_demo.cpp" />
     <ClCompile Include="ICP_test.cpp" />
     <ClCompile Include="VisualiserFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicGrabber.h" />
+    <ClInclude Include="ICP_Header.h" />
+    <ClInclude Include="Useful_Functions.h" />
     <ClInclude Include="VisualiserAttempt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

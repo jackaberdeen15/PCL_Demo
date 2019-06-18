@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\Jack\source\repos\pcl_visualizer\pcl_visualizer_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VisualiserFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -27,6 +24,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BasicGrabber.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ICP_Header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Useful_Functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

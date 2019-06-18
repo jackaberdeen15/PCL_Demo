@@ -19,6 +19,10 @@
 #include <pcl/console/parse.h>
 #include <pcl/point_types.h>
 #include <pcl/visualization/cloud_viewer.h>
+#include <pcl/console/time.h>   // TicToc
+
+//custom headers
+#include <C:\Users\Jack\source\repos\pcl_visualizer\build\Useful_Functions.h>
 
 using namespace pcl;
 using namespace std;
@@ -65,19 +69,15 @@ class BasicOpenNI2Processor
 private:
 	int num_s1 = 0;
 
+	console::TicToc timer;
+
 	void cloud_cb_(const PointCloud<T>::ConstPtr &cloud)
 	{
 		cout << "Entered callback 'View' " << std::endl;
+		cout << "Press enter to continue." << endl;
+		ReadLastCharOfLine();
 
-		static unsigned count = 0;
-		static double last = getTime();
-		if (++count == 10)
-		{
-			double now = getTime();
-			cout << "Distance of center pixel :" << cloud->points[(cloud->width >> 1) * (cloud->height + 1)].z << " m. Average framerate: " << double(count) / double(now - last) << " fps" << std::endl;
-			count = 0;
-			last = now;
-		}
+		timer.tic();
 
 		if (!viewer.wasStopped())
 			viewer.showCloud(cloud);
@@ -97,13 +97,17 @@ private:
 			cout << "Saved " << cloud->points.size() << " data points to " << cloudname << "." << endl;
 		}
 		*/
+
+		cout << "cloud_cb completed in " << timer.toc() << "ms." << endl;
 	}
 
 	void save_cloud(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud) {
+		timer.tic();
 		stringstream s;
-		s << "cloud_2_" << num_s1++ << ".pcd"; //
+		s << "cloud_3_" << num_s1++ << ".pcd"; //
 		cout << "Entered callback 'Save' " << std::endl;
-		io::savePCDFileASCII(s.str(), *cloud);
+		io::savePCDFileBinary(s.str(), *cloud);
+		cout << "file saved after " << timer.toc() << "ms." << endl;
 	}
 
 public:

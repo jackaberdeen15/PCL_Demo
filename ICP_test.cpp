@@ -15,9 +15,12 @@
 #include <pcl/console/time.h>   // TicToc
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/passthrough.h>
+//#include <pcl/filters/voxel_grid.h>
 
 //custom headers
-
+#include <C:\Users\Jack\source\repos\pcl_visualizer\build\ICP_Header.h>
+#include <C:\Users\Jack\source\repos\pcl_visualizer\build\BasicGrabber.h>
+#include <C:\Users\Jack\source\repos\pcl_visualizer\build\Useful_Functions.h>
 
 //names space declerations
 using namespace std;
@@ -216,46 +219,102 @@ int tmain(int argc, char* argv[])
 }
 
 
-int bmain(int argc, char** argv[])
+int main(int argc, char** argv[])
 {
-	PointCloudT::Ptr cloud_orig(new PointCloudT);
-	PointCloudT::Ptr cloud_out(new PointCloudT);
-	PointCloudT::Ptr cloud_in(new PointCloudT);
+	short choice = 1;
 	
-	if (io::loadPCDFile<PointT>("cloud_1_0.pcd", *cloud_orig) == -1)
+	while (choice == 0)
 	{
-		PCL_ERROR("Couldnt read file.\n");
-		return -1;
+		cout << "Select what you would like to do?" << endl;
+		cout << "1: Perform ICP." << endl;
+		cout << "2: View a Cloud." << endl;
+		cout << "3: Get new Clouds." << endl;
+		cout << "4: Convert existing cloud into a voxel grid(IN PROGRESS)." << endl;
+		cout << "0: Exit Program." << endl;
+
+		short choice;
+		cin >> choice;
+
+		switch (choice)
+		{
+		case 1:
+		{
+			ICP icp_proc;
+
+			cout << "Enter name of first cloud to load: ";
+			string s1;
+			cin >> s1;
+			stringstream ss1;
+			ss1 << s1 << ".pcd"; //
+
+			icp_proc.load_pc_1(ss1.str());
+
+			cout << "Enter name of second cloud to load: ";
+			string s2;
+			cin >> s2;
+			stringstream ss2;
+			ss2 << s2 << ".pcd"; //
+
+			icp_proc.load_pc_2(ss2.str());
+
+			icp_proc.filter_clouds();
+			icp_proc.basic_icp_process();
+
+			break;
+		}
+		case 2:
+		{
+			PointCloudT::Ptr loaded_cloud(new PointCloudT);
+
+			cout << "Enter name of the processed cloud to load: ";
+			string sf;
+			cin >> sf;
+			stringstream ssf;
+			ssf << sf << ".pcd";
+
+			io::loadPCDFile(ssf.str(), *loaded_cloud);
+
+			visualization::CloudViewer viewer("Simple Cloud Viewer");
+
+			if (!viewer.wasStopped())
+				viewer.showCloud(loaded_cloud);
+			while (!viewer.wasStopped())
+			{
+				//boost::this_thread::sleep(boost::posix_time::seconds(1));
+			}
+
+			break;
+		}
+		case 3:
+		{
+			BasicOpenNI2Processor v;
+			v.run();
+		}
+		case 4:
+		{
+			cout << "Not yet implemented." << endl;
+			/*PointCloudT::Ptr loaded_cloud(new PointCloudT);
+			PointCloudT::Ptr filtered_cloud(new PointCloudT);
+
+			cout << "Enter name of the cloud to load: ";
+			string sf;
+			cin >> sf;
+			stringstream ssf;
+			ssf << sf << ".pcd";
+
+			io::loadPCDFile(ssf.str(), *loaded_cloud);
+
+			cout << "Point Cloud before filtering: " << loaded_cloud->width * loaded_cloud->height << " data points (" << getFieldsList(*loaded_cloud) << ")." << endl;
+
+			VoxelGrid<PointCloudT> sor;
+			sor.setInputCloud(loaded_cloud);
+			*/
+			break;
+		}
+		default:
+			break;
+		break;
+		}
 	}
-	
-	PassThrough<PointT> pass;
-	pass.setInputCloud(cloud_orig);
-	pass.setFilterFieldName("z");
-	pass.setFilterLimits(-1000.0, 1000.0);
-	pass.filter(*cloud_in);
-
-	*cloud_out = *cloud_in;
-
-	cout << "size:" << cloud_out->points.size() << endl;
-	for (size_t i = 0; i < cloud_in->points.size(); ++i)
-		cloud_out->points[i].x = cloud_in->points[i].x + 0.7f;
-	cout << "Transformed " << cloud_in->points.size() << endl;
-
-	pcl::IterativeClosestPoint<PointT, PointT> icp;
-	icp.setInputSource(cloud_in);
-	icp.setInputTarget(cloud_out);
-	PointCloudT::Ptr Final(new PointCloudT);
-	icp.align(*Final);
-	cout << "has converged:" << icp.hasConverged() << " score: " << icp.getFitnessScore() << endl;
-	cout << icp.getFinalTransformation() << endl;
-
-	visualization::CloudViewer viewer("Simple Cloud Viewer");
-	if (!viewer.wasStopped())
-		viewer.showCloud(Final);
-	while (!viewer.wasStopped())
-	{
-		//boost::this_thread::sleep(boost::posix_time::seconds(1));
-	}
-
 	return (0);
 }

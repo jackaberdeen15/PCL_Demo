@@ -157,7 +157,7 @@ visualization::PCLVisualizer::Ptr viewportsVis(PointCloud<PointXYZRGB>::ConstPtr
 }
 
 unsigned int text_id = 0;
-
+/*
 void keyboardEventOccurred(const visualization::KeyboardEvent &event, void* viewer_void)
 {
 	visualization::PCLVisualizer *viewer = static_cast<visualization::PCLVisualizer *>(viewer_void);
@@ -174,7 +174,7 @@ void keyboardEventOccurred(const visualization::KeyboardEvent &event, void* view
 		text_id = 0;
 	}
 }
-
+*/
 void mouseEventOccurred(const visualization::MouseEvent &event, void* viewer_void)
 {
 	visualization::PCLVisualizer *viewer = static_cast<visualization::PCLVisualizer *> (viewer_void);
@@ -195,7 +195,7 @@ visualization::PCLVisualizer::Ptr interactionCustomizationVis()
 	viewer->setBackgroundColor(0, 0, 0);
 	viewer->addCoordinateSystem(1.0);
 
-	viewer->registerKeyboardCallback(keyboardEventOccurred, (void*)viewer.get());
+	//sviewer->registerKeyboardCallback(keyboardEventOccurred, (void*)viewer.get());
 	viewer->registerMouseCallback(mouseEventOccurred, (void*)viewer.get());
 
 	return viewer;
