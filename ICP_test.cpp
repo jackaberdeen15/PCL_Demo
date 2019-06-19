@@ -15,7 +15,7 @@
 #include <pcl/console/time.h>   // TicToc
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/passthrough.h>
-//#include <pcl/filters/voxel_grid.h>
+#include <pcl/filters/voxel_grid.h>
 
 //custom headers
 #include <C:\Users\Jack\source\repos\pcl_visualizer\build\ICP_Header.h>
@@ -223,7 +223,7 @@ int main(int argc, char** argv[])
 {
 	short choice = 1;
 	
-	while (choice == 0)
+	while (choice != 0)
 	{
 		cout << "Select what you would like to do?" << endl;
 		cout << "1: Perform ICP." << endl;
@@ -292,9 +292,10 @@ int main(int argc, char** argv[])
 		}
 		case 4:
 		{
-			cout << "Not yet implemented." << endl;
-			/*PointCloudT::Ptr loaded_cloud(new PointCloudT);
-			PointCloudT::Ptr filtered_cloud(new PointCloudT);
+			//cout << "Not yet implemented." << endl;
+			
+			PointCloudT::Ptr loaded_cloud(new PointCloudT);
+			PointCloudT::Ptr cloud_filtered(new PointCloudT);
 
 			cout << "Enter name of the cloud to load: ";
 			string sf;
@@ -303,12 +304,25 @@ int main(int argc, char** argv[])
 			ssf << sf << ".pcd";
 
 			io::loadPCDFile(ssf.str(), *loaded_cloud);
-
+			
 			cout << "Point Cloud before filtering: " << loaded_cloud->width * loaded_cloud->height << " data points (" << getFieldsList(*loaded_cloud) << ")." << endl;
 
-			VoxelGrid<PointCloudT> sor;
+			VoxelGrid<PointT> sor;
 			sor.setInputCloud(loaded_cloud);
-			*/
+			sor.setLeafSize(0.02f, 0.02f, 0.02f);
+			sor.filter(*cloud_filtered);
+
+			cout << "PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height
+				<< " data points (" << getFieldsList(*cloud_filtered) << ")." << endl;
+
+			cout << "Enter name of the cloud to save: ";
+			string s1;
+			cin >> s1;
+			stringstream ss1;
+			ss1 << s1 << ".pcd";
+
+			io::savePCDFileBinary(ss1.str(), *cloud_filtered);
+								
 			break;
 		}
 		default:
