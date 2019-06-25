@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <vector>
 
 //pcl headers
 #include <pcl/io/ply_io.h>
@@ -16,6 +17,9 @@
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/passthrough.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/search/search.h>
+#include <pcl/search/kdtree.h>
+#include <pcl/segmentation/region_growing_rgb.h>
 
 //custom headers
 #include <C:\Users\Jack\source\repos\pcl_visualizer\build\ICP_Header.h>
@@ -25,6 +29,7 @@
 //names space declerations
 using namespace std;
 using namespace pcl;
+using namespace chrono_literals;
 
 //global decs
 typedef PointXYZRGBA PointT;
@@ -68,6 +73,12 @@ int main(int argc, char** argv[])
 
 		switch (choice)
 		{
+		case 0:
+		{
+			cout << "Ending program." << endl;
+			return 0;
+			break;
+		}
 		case 1:
 		{
 			ICP icp_proc;
@@ -155,6 +166,44 @@ int main(int argc, char** argv[])
 			io::savePCDFileBinary(ss1.str(), *cloud_filtered);
 								
 			break;
+		}
+		case 5:
+		{
+			search::Search <PointT>::Ptr tree(new search::KdTree<PointT>);
+
+			PointCloudT::Ptr cloud(new PointCloudT);
+			if (io::loadPCDFile <PointT>("region_growing_rgb_tutorial.pcd", *cloud) == -1)
+			{
+				cout << "Cloud reading failed." << endl;
+				return (-1);
+			}
+
+			IndicesPtr indices(new vector <int>);
+			PassThrough<PointT> pass;
+			pass.setInputCloud(cloud);
+			pass.setFilterFieldName("z");
+			pass.setFilterLimits(0.0, 1.0);
+			pass.filter(*indices);
+
+			RegionGrowingRGB<PointT> reg;
+			reg.setInputCloud(cloud);
+			reg.setIndices(indices);
+			reg.setSearchMethod(tree);
+			reg.setDistanceThreshold(10);
+			reg.setPointColorThreshold(6);
+			reg.setRegionColorThreshold(5);
+			reg.setMinClusterSize(600);
+
+			vector <PointIndices> clusters;
+			reg.extract(clusters);
+
+			PointCloudT::Ptr colored_cloud = reg.getColoredCloudRGBA();
+			visualization::CloudViewer viewer("Cluster viewer");
+			viewer.showCloud(colored_cloud);
+			while (!viewer.wasStopped())
+			{
+				std::this_thread::sleep_for(100us);
+			}
 		}
 		default:
 			break;

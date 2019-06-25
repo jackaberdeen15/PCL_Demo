@@ -104,10 +104,33 @@ private:
 	void save_cloud(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud) {
 		timer.tic();
 		stringstream s;
-		s << "cloud_3_" << num_s1++ << ".pcd"; //
+		s << "cld_" << num_s1 << ".pcd"; //
 		cout << "Entered callback 'Save' " << std::endl;
 		io::savePCDFileBinary(s.str(), *cloud);
-		cout << "file saved after " << timer.toc() << "ms." << endl;
+		cout << "file " << s.str() << " saved after " << timer.toc() << "ms." << endl;
+
+		cout << "Converting cloud into Voxel Grid." << endl;
+		timer.tic();
+		PointCloudT::Ptr cloud_filtered(new PointCloudT);
+
+		cout << "Point Cloud before filtering: " << cloud->width * cloud->height << " data points (" << getFieldsList(*cloud) << ")." << endl;
+
+		VoxelGrid<PointT> sor;
+		sor.setInputCloud(cloud);
+		sor.setLeafSize(0.01f, 0.01f, 0.01f);
+		sor.filter(*cloud_filtered);
+
+		cout << "PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height
+			<< " data points (" << getFieldsList(*cloud_filtered) << ")." << endl;
+
+		cout << "Cloud converted in " << timer.toc() << "ms." << endl;
+		timer.tic();
+		stringstream ss;
+		ss << "vxl_" << num_s1++ << ".pcd"; //
+		io::savePCDFileBinary(ss.str(), *cloud_filtered);
+		cout << "file " << ss.str() << " saved after " << timer.toc() << "ms." << endl;
+
+		
 	}
 
 public:
