@@ -20,6 +20,7 @@
 #include <pcl/point_types.h>
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/console/time.h>   // TicToc
+#include <pcl/filters/statistical_outlier_removal.h>
 
 //custom headers
 #include <C:\Users\Jack\source\repos\pcl_visualizer\build\Useful_Functions.h>
@@ -102,6 +103,17 @@ private:
 	}
 
 	void save_cloud(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud) {
+		
+		/*cout << "Removing statistical outliers from cloud." << endl;
+		timer.tic();
+		PointCloud<T>::Ptr filt_cloud(new PointCloud<T>);
+		pcl::StatisticalOutlierRemoval<T> sor;
+		sor.setInputCloud(cloud);
+		sor.setMeanK(50);
+		sor.setStddevMulThresh(1.0);
+		sor.filter(*filt_cloud);		
+		cout << "Outliers removed in " << timer.toc() << "ms." << endl;*/
+		
 		timer.tic();
 		stringstream s;
 		s << "cld_" << num_s1 << ".pcd"; //
@@ -115,10 +127,10 @@ private:
 
 		cout << "Point Cloud before filtering: " << cloud->width * cloud->height << " data points (" << getFieldsList(*cloud) << ")." << endl;
 
-		VoxelGrid<PointT> sor;
-		sor.setInputCloud(cloud);
-		sor.setLeafSize(0.01f, 0.01f, 0.01f);
-		sor.filter(*cloud_filtered);
+		VoxelGrid<PointT> vxl;
+		vxl.setInputCloud(cloud);
+		vxl.setLeafSize(0.01f, 0.01f, 0.01f);
+		vxl.filter(*cloud_filtered);
 
 		cout << "PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height
 			<< " data points (" << getFieldsList(*cloud_filtered) << ")." << endl;

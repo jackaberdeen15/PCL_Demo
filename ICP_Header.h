@@ -19,6 +19,11 @@
 #include <pcl/console/time.h>   // TicToc
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/passthrough.h>
+#include <pcl/range_image/range_image.h>
+#include <pcl/visualization/range_image_visualizer.h>
+#include <pcl/features/range_image_border_extractor.h>
+#include <pcl/keypoints/narf_keypoint.h>
+#include <pcl/console/parse.h>
 
 
 using namespace std;
@@ -26,7 +31,6 @@ using namespace pcl;
 
 typedef PointXYZRGBA PointT;
 typedef PointCloud<PointT> PointCloudT;
-
 
 class ICP {
 private:
@@ -83,7 +87,7 @@ public:
 		cout << "Loaded 2nd Cloud in " << time.toc() << "ms." << endl;
 	}
 
-	void filter_clouds(float uppr_lim=4.0, float lower_lim=-2.0)
+	void filter_clouds(float uppr_lim=2.0, float lower_lim=-2.0)
 	{
 		cout << "Filtering Clouds." << endl;
 		time.tic();
@@ -115,14 +119,14 @@ public:
 	{
 		cout << "Starting ICP Process." << endl;
 		time.tic();
-		short max_iterations = 100;
+		short max_iterations = 120;
 		
 		pcl::IterativeClosestPoint<PointT, PointT> icp;
 		// set the input and target
 		icp.setInputSource(cloud_1_filt);
 		icp.setInputTarget(cloud_2_filt);
 		// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
-		icp.setMaxCorrespondenceDistance(0.10);
+		icp.setMaxCorrespondenceDistance(5);
 		// Set the maximum number of iterations (criterion 1)
 		icp.setMaximumIterations(max_iterations);
 		// Set the transformation epsilon (criterion 2)
@@ -130,13 +134,13 @@ public:
 		// Set the euclidean distance difference epsilon (criterion 3)
 		icp.setEuclideanFitnessEpsilon(1);
 
-		icp.setRANSACOutlierRejectionThreshold(0.001);
+		icp.setRANSACOutlierRejectionThreshold(0.05);
 		icp.setRANSACIterations(max_iterations);
 
 
 		PointCloudT::Ptr output_cloud(new PointCloudT);
 				
-		double fit_score = 1000000;
+		double fit_score;
 		
 		
 		icp.align(*output_cloud);
@@ -147,6 +151,8 @@ public:
 		cout << ", with a fitness score of " << fit_score << "." << endl;
 
 		PointCloudT::Ptr combined_cloud(new PointCloudT);
+
+		//transformPointCloud(*output_cloud, *output_cloud, icp.getFinalTransformation());
 		
 		*combined_cloud = *output_cloud;
 		*combined_cloud += *cloud_2_filt;
@@ -166,5 +172,72 @@ public:
 
 
 };
+
+class CSTM_ICP_PIPE
+{
+private:
+	
+
+public:
+
+	/*PointCloud<Normal>::Ptr get_normals(PointCloudT::Ptr cloud, double s_rad = 0.03)
+	{
+		// Create the normal estimation class, and pass the input dataset to it
+		NormalEstimation<PointT, Normal> ne;
+		ne.setInputCloud(cloud);
+
+		// Create an empty kdtree representation, and pass it to the normal estimation object.
+		// Its content will be filled inside the object, based on the given input dataset (as no other search surface is given).
+		search::KdTree<PointT>::Ptr tree(new search::KdTree<PointT>());
+		ne.setSearchMethod(tree);
+
+		// Output datasets
+		PointCloud<Normal>::Ptr cloud_normals(new PointCloud<Normal>);
+
+		// Use all neighbors in a sphere of radius 3cm
+		ne.setRadiusSearch(s_rad);
+
+		// Compute the features
+		ne.compute(*cloud_normals);
+
+		return cloud_normals;
+	}*/
+	
+	PointCloud<int> extract_keypoints(PointCloudT::Ptr cloud)
+	{
+
+		//Create RangeImage from the PointCloud
+		float angularResolution = (float)(1.0f * (M_PI / 180.0f));  //   1.0 degree in radians
+		float maxAngleWidth = (float)(360.0f * (M_PI / 180.0f));  // 360.0 degree in radians
+		float maxAngleHeight = (float)(180.0f * (M_PI / 180.0f));  // 180.0 degree in radians
+		Eigen::Affine3f sensorPose = (Eigen::Affine3f)Eigen::Translation3f(0.0f, 0.0f, 0.0f);
+		RangeImage::CoordinateFrame coordinate_frame = RangeImage::CAMERA_FRAME;
+		float noiseLevel = 0.00;
+		float minRange = 0.0f;
+		int borderSize = 1;
+
+		PointCloud<PointXYZ>::Ptr xyz_cloud( new PointCloud<PointXYZ>);
+		copyPointCloud(*cloud, *xyz_cloud);
+
+		RangeImage rangeImage;
+		rangeImage.createFromPointCloud(*xyz_cloud, angularResolution, maxAngleWidth, maxAngleHeight, sensorPose, coordinate_frame, noiseLevel, minRange, borderSize);
+		
+		// Extract NARF keypoints
+		RangeImageBorderExtractor range_image_border_extractor;
+		NarfKeypoint narf_keypoint_detector(&range_image_border_extractor);
+		narf_keypoint_detector.setRangeImage(&rangeImage);
+		narf_keypoint_detector.getParameters().support_size = 0.1f;
+		//narf_keypoint_detector.getParameters ().add_points_on_straight_edges = true;
+		//narf_keypoint_detector.getParameters ().distance_for_additional_points = 0.5;
+
+		PointCloud<int> keypoint_indices;
+		narf_keypoint_detector.compute(keypoint_indices);
+		cout << "Found " << keypoint_indices.points.size() << " key points.\n";
+
+		return keypoint_indices;
+	}
+
+};
+
 
 #endif // !ICP_HEADER

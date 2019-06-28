@@ -330,6 +330,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicGrabber.h" />
+    <ClInclude Include="ColourBasedRegionSegmentation.h" />
     <ClInclude Include="ICP_Header.h" />
     <ClInclude Include="Useful_Functions.h" />
     <ClInclude Include="VisualiserAttempt.h" />
