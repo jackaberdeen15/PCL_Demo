@@ -28,6 +28,8 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/segmentation/extract_clusters.h>
+#include <pcl/ModelCoefficients.h>
+#include <pcl/features/normal_3d.h>
 
 //custom headers
 #include <C:\Users\Jack\source\repos\pcl_visualizer\build\ICP_Header.h>
@@ -444,6 +446,8 @@ int main(int argc, char** argv[])
 			// Create the filtering object: downsample the dataset using a leaf size of 1cm
 			VoxelGrid<PointT> vg;
 			vg.setInputCloud(cloud);
+			vg.setFilterFieldName("z");
+			vg.setFilterLimits(0.0, 2.5);
 			vg.setLeafSize(0.01f, 0.01f, 0.01f);
 			vg.filter(*cloud_filtered);
 			cout << "PointCloud after filtering has: " << cloud_filtered->points.size() << " data points." << endl; 
@@ -464,6 +468,7 @@ int main(int argc, char** argv[])
 			int i = 0, nr_points = (int)cloud_filtered->points.size();
 			while (cloud_filtered->points.size() > 0.3 * nr_points)
 			{
+				cout << "Still in 'while' loop." << endl;
 				// Segment the largest planar component from the remaining cloud
 				seg.setInputCloud(cloud_filtered);
 				seg.segment(*inliers, *coefficients);
@@ -482,41 +487,55 @@ int main(int argc, char** argv[])
 				// Get the points associated with the planar surface
 				extract.filter(*cloud_plane);
 				cout << "PointCloud representing the planar component: " << cloud_plane->points.size() << " data points." << endl;
+				std::stringstream ss;
+				ss << "plane_" << i << ".pcd";
+				io::savePCDFileBinary(ss.str(), *cloud_plane); //saves the cloud of the current cluster
+				i++;
 
 				// Remove the planar inliers, extract the rest
 				extract.setNegative(true);
 				extract.filter(*cloud_f);
 				*cloud_filtered = *cloud_f;
 
-				// Creating the KdTree object for the search method of the extraction
-				search::KdTree<PointT>::Ptr tree(new search::KdTree<PointT>);
-				tree->setInputCloud(cloud_filtered);
-
 				
-				EuclideanClusterExtraction<PointT> ec;
-				ec.setClusterTolerance(0.02); // 2cm
-				ec.setMinClusterSize(50);
-				ec.setMaxClusterSize(25000);
-				ec.setSearchMethod(tree);
-				ec.setInputCloud(cloud_filtered);
-				ec.extract(cluster_indices);
 
+				cout << cloud_filtered->points.size() << " > " << 0.3 * nr_points << endl;
 			}
 
+			cout << "Exited 'while' loop." << endl;
+			cout << "Extracting clusters." << endl;
+
+			// Creating the KdTree object for the search method of the extraction
+			search::KdTree<PointT>::Ptr tree(new search::KdTree<PointT>);
+			tree->setInputCloud(cloud_filtered);
+
+
+			EuclideanClusterExtraction<PointT> ec;
+			ec.setClusterTolerance(0.02); // 2cm
+			ec.setMinClusterSize(50);
+			ec.setMaxClusterSize(25000);
+			ec.setSearchMethod(tree);
+			ec.setInputCloud(cloud_filtered);
+			ec.extract(cluster_indices);
+
+			cout << "Clusters extracted." << endl;
+			cout << "Saving individual clusters." << endl;
+
 			int j = 0;
-			for (vector<PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it)
+			for (vector<PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it)//iterates through all the clusters stored in vector
 			{
+				cout << "entered 'FOR' loop with iteration being " << j << "." << endl;
 				PointCloud<PointT>::Ptr cloud_cluster(new PointCloud<PointT>);
-				for (vector<int>::const_iterator pit = it->indices.begin(); pit != it->indices.end(); ++pit)
-					cloud_cluster->points.push_back(cloud_filtered->points[*pit]); 
+				for (vector<int>::const_iterator pit = it->indices.begin(); pit != it->indices.end(); ++pit) //iterates through all points in a cluster
+					cloud_cluster->points.push_back(cloud_filtered->points[*pit]); //adds each point of the cluster at the end of the point cloud vector
 				cloud_cluster->width = cloud_cluster->points.size();
 				cloud_cluster->height = 1;
-				cloud_cluster->is_dense = true;
+				cloud_cluster->is_dense = true; //no points are invalid
 
-				cout << "PointCloud representing the Cluster: " << cloud_cluster->points.size() << " data points." << endl;
-				stringstream ss;
-				ss << "cloud_cluster_" << j << ".pcd";
-				io::savePCDFileBinary(ss.str(), *cloud_cluster); 
+				std::cout << "PointCloud representing the Cluster: " << cloud_cluster->points.size() << " data points." << std::endl;
+				std::stringstream ss;
+				ss << "cluster_" << j << ".pcd";
+				io::savePCDFileBinary(ss.str(), *cloud_cluster); //saves the cloud of the current cluster
 				j++;
 			}
 
