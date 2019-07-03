@@ -98,6 +98,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;FLANN_STATIC;vtkIOExport_AUTOINIT=1(vtkIOExportOpenGL);vtkRenderingContext2D_AUTOINIT=1(vtkRenderingContextOpenGL);vtkRenderingCore_INCLUDE="C:/Users/Jack/source/repos/pcl_visualizer/build/CMakeFiles/vtkRenderingCore_AUTOINIT_vtkInteractionStyle_vtkRenderingFreeType_vtkRenderingOpenGL.h";vtkRenderingVolume_AUTOINIT=1(vtkRenderingVolumeOpenGL);__SSSE3__;__SSE2__;__SSE__;BOOST_ALL_NO_LIB;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;FLANN_STATIC;vtkIOExport_AUTOINIT=1(vtkIOExportOpenGL);vtkRenderingContext2D_AUTOINIT=1(vtkRenderingContextOpenGL);vtkRenderingCore_INCLUDE=\"C:/Users/Jack/source/repos/pcl_visualizer/build/CMakeFiles/vtkRenderingCore_AUTOINIT_vtkInteractionStyle_vtkRenderingFreeType_vtkRenderingOpenGL.h\";vtkRenderingVolume_AUTOINIT=1(vtkRenderingVolumeOpenGL);__SSSE3__;__SSE2__;__SSE__;BOOST_ALL_NO_LIB;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -331,6 +332,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClInclude Include="BasicGrabber.h" />
     <ClInclude Include="ColourBasedRegionSegmentation.h" />
+    <ClInclude Include="CustomPointTypes.h" />
     <ClInclude Include="ICP_Header.h" />
     <ClInclude Include="Useful_Functions.h" />
     <ClInclude Include="VisualiserAttempt.h" />

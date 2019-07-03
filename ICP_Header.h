@@ -119,7 +119,7 @@ public:
 	{
 		cout << "Starting ICP Process." << endl;
 		time.tic();
-		short max_iterations = 120;
+		short max_iterations = 1000;
 		
 		pcl::IterativeClosestPoint<PointT, PointT> icp;
 		// set the input and target
