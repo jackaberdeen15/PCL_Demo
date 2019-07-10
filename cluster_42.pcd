@@ -4,11 +4,10 @@ FIELDS x y z rgba
 SIZE 4 4 4 4
 TYPE F F F U
 COUNT 1 1 1 1
-WIDTH 94
+WIDTH 59
 HEIGHT 1
 VIEWPOINT 0 0 0 1 0 0 0
-POINTS 94
+POINTS 59
 DATA binary
-°\O¿¬IE¿Q_@VMSÿÚ®M¿¬IE¿Q_@TMVÿL¿¬IE¿Q_@QORÿ°\O¿×›C¿Q_@YKNÿÚ®M¿×›C¿Q_@ULRÿL¿×›C¿Q_@RKNÿ?{P¿¹^A¿Q_@PLIÿÚ®M¿îA¿Q_@QKNÿL¿îA¿Q_@LHIÿFS¿U’>¿Q_@MVXÿ›3P¿U’>¿Q_@QVYÿFS¿”<¿Q_@T[^ÿ†
-Q¿”<¿Q_@UZ\ÿFS¿Óˆ9¿Q_@XZ^ÿ›3P¿Óˆ9¿Q_@Y\]ÿ[¸R¿ýÚ7¿Q_@X[]ÿ›3P¿7¿Q_@X\\ÿÚ®M¿(-6¿Q_@Z^ZÿFS¿Q4¿Q_@Z]\ÿ›3P¿Q4¿Q_@Z]Zÿ›3P¿ú1¿Q_@[\[ÿÚ®M¿ú1¿Q_@[^ZÿL¿¦#1¿Q_@[`]ÿ›3P¿Ðu/¿Q_@\\[ÿÚ®M¿Ðu/¿Q_@[^[ÿL¿Ðu/¿Q_@[^\ÿ°\O¿ñ,¿Q_@Y\[ÿÚ®M¿ñ,¿Q_@Y][ÿL¿ñ,¿Q_@Z^[ÿ›3P¿Nl*¿Q_@Y\[ÿÚ®M¿Nl*¿Q_@Y][ÿL¿Nl*¿Q_@Z^\ÿœ3P¿Žç'¿Q_@Y\]ÿÚ®M¿Žç'¿Q_@Z]\ÿL¿¢'¿Q_@\^\ÿ°\O¿Ìb%¿Q_@Z]\ÿÚ®M¿Ìb%¿Q_@\^[ÿL¿Ìb%¿Q_@^]\ÿ°\O¿Þ"¿Q_@Y\[ÿÚ®M¿Þ"¿Q_@Y]Zÿ*K¿Þ"¿Q_@[]\ÿY¥H¿!"¿Q_@\^]ÿÚ®M¿JY ¿Q_@Y\Zÿ*K¿JY ¿Q_@[][ÿY¥H¿JY ¿Q_@^_]ÿ°\O¿ŠÔ¿Q_@Y\ZÿÚ®M¿ŠÔ¿Q_@Y\Yÿ*K¿ŠÔ¿Q_@[][ÿY¥H¿ŠÔ¿Q_@_\]ÿøëO¿;1¿Q_@Y[\ÿÚ®M¿Þx¿Q_@Y\[ÿ½qK¿‚À¿Q_@Z\Zÿ›3P¿ô¿Q_@Z[[ÿÚ®M¿ô¿Q_@Z[ZÿL¿ô¿Q_@[[ZÿFS¿r˜¿Q_@YZXÿ?{P¿·¿Q_@YZZÿFS¿›ê¿Q_@XZYÿ†
-Q¿›ê¿Q_@YZ[ÿ[¸R¿Ûe¿Q_@WYXÿœ3P¿Ûe¿Q_@Y[Yÿ[¸R¿á¿Q_@YYWÿ›3P¿á¿Q_@[ZYÿ[¸R¿Y\¿Q_@YYWÿ?{P¿ý£¿Q_@XYXÿ[¸R¿™×¿Q_@XYVÿ›3P¿™×¿Q_@W[Xÿ[¸R¿×R¿Q_@WZUÿœ3P¿×R¿Q_@XZWÿÚ®M¿×R¿Q_@XZYÿFS¿Î¿Q_@YXTÿ›3P¿Î¿Q_@\ZWÿÚ®M¿Î¿Q_@[[Xÿ£GS¿²¿Q_@WXUÿœ3P¿VI¿Q_@XYWÿFS¿*‰ý¾Q_@VWVÿ›3P¿*‰ý¾Q_@WZWÿV¿¨ø¾Q_@VWUÿFS¿©ø¾Q_@VWUÿ?{P¿ðù¾Q_@WYVÿV¿'vó¾Q_@VVVÿFS¿'vó¾Q_@VWUÿÝÁW¿¤lî¾Q_@VVWÿV¿¤lî¾Q_@VVUÿ1fT¿¤lî¾Q_@VWUÿÝÁW¿#cé¾Q_@VVTÿV¿#cé¾Q_@VWTÿ1fT¿#cé¾Q_@VVUÿÝÁW¿¢Yä¾Q_@UVTÿV¿xæ¾Q_@VVTÿÝÁW¿ Pß¾Q_@TWSÿV¿ Pß¾Q_@VWSÿÝÁW¿tôÛ¾Q_@TWRÿV¿tôÛ¾Q_@UWSÿ
+àO]@]$D¾ƒ_j?+55ÿàO]@@~=¾ƒ_j?067ÿàO]@…3¾„_j?058ÿàO]@]$D¾ÎÝl?--&ÿàO]@@~=¾ÎÝl?0++ÿàO]@…3¾ÎÝl?1,-ÿàO]@ÀPƒ¾Ý0p?1./ÿàO]@U¨|¾Ý0p?4./ÿàO]@\o¾Ý0p?4-/ÿàO]@ðbe¾Ý0p?5./ÿàO]@Ãi[¾Ý0p?5.0ÿàO]@—pQ¾\o?4-2ÿàO]@¼[F¾£o?3.,ÿàO]@@~=¾\o?2..ÿàO]@VMˆ¾dÚq?/.3ÿàO]@ÀPƒ¾dÚq?2./ÿàO]@U¨|¾dÚq?5..ÿàO]@\o¾dÚq?5..ÿàO]@ðbe¾dÚq?8..ÿàO]@Ãi[¾dÚq?8./ÿàO]@—pQ¾dÚq?6.1ÿàO]@lwG¾dÚq?50.ÿàO]@ìI¾s-u?5-0ÿàO]@VMˆ¾¯Xt?3-5ÿàO]@ÀPƒ¾¯Xt?5./ÿàO]@U¨|¾¯Xt?8.-ÿàO]@\o¾¯Xt?:.-ÿàO]@ðbe¾¯Xt?8..ÿàO]@Äi[¾¯Xt?6-/ÿàO]@—pQ¾¯Xt?6./ÿàO]@“H¾Ât?7./ÿàO]@ìI¾ùÖv?6-.ÿàO]@ÀPƒ¾ùÖv?7/-ÿàO]@U¨|¾ùÖv?9..ÿàO]@\o¾ùÖv?:./ÿàO]@ðbe¾ùÖv?9./ÿàO]@Ãi[¾ùÖv?9.0ÿàO]@úœ¾*z?7-/ÿàO]@ìI¾EUy?6-.ÿàO]@Ï£†¾*z?82.ÿàO]@ÀPƒ¾*z?70-ÿàO]@V¨|¾EUy?8..ÿàO]@\o¾EUy?8./ÿàO]@ðbe¾EUy?:./ÿàO]@s…\¾Yy?<.0ÿàO]@ìI¾Ó{?5-.ÿàO]@VMˆ¾Ó{?81-ÿàO]@ÀPƒ¾Ó{?71-ÿàO]@U¨|¾Ó{?6//ÿàO]@\o¾Ó{?:.0ÿàO]@ðbe¾Ó{?:.0ÿàO]@Ò¼^¾Ó{?9.0ÿàO]@ìI¾ÛQ~?5+-ÿàO]@.Ûˆ¾ð
+~?;0-ÿàO]@ÀPƒ¾}}?91-ÿàO]@U¨|¾}}?500ÿàO]@\o¾}}?7.0ÿàO]@ðbe¾ÛQ~?9.0ÿàO]@ðbe¾uÒ€?9-/ÿ

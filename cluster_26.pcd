@@ -4,11 +4,12 @@ FIELDS x y z rgba
 SIZE 4 4 4 4
 TYPE F F F U
 COUNT 1 1 1 1
-WIDTH 133
+WIDTH 88
 HEIGHT 1
 VIEWPOINT 0 0 0 1 0 0 0
-POINTS 133
+POINTS 88
 DATA binary
-]?“¿íOy¿ÙV@#ÿ%‡¿íOy¿ÙV@IHZÿV†¿íOy¿ÙV@\nbÿH—¿ºv¿ÙV@,9Oÿy–¿Fäv¿ÙV@-(@ÿ)f•¿mŸv¿ÙV@%(<ÿé”¿ºv¿ÙV@);ÿý:‘¿ºv¿ÙV@(Vwÿ*¿ºv¿ÙV@&+OÿhŽ¿ºv¿ÙV@ Aÿƒ™¿ºv¿ÙV@=MÿÃ‰¿ºv¿ÙV@GÿðZˆ¿ºv¿ÙV@	Dÿ%‡¿Fäv¿ÙV@) BÿJï…¿Gäv¿ÙV@!2Mÿ0R„¿ºv¿ÙV@HF]ÿ]ƒ¿Fäv¿ÙV@7Lÿ÷‚¿mŸv¿ÙV@!Kÿ·°€¿ºv¿ÙV@0PÿTÄ¿ºv¿ÙV@$TÿH—¿ xt¿ÙV@Lgoÿy–¿ xt¿ÙV@JXmÿ¼C•¿ xt¿ÙV@DZfÿ£¦“¿ xt¿ÙV@2IPÿÐp’¿ xt¿ÙV@"K{ÿC¢‘¿ xt¿ÙV@H~­ÿhŽ¿ xt¿ÙV@:H[ÿƒ™¿ xt¿ÙV@9Y`ÿðZˆ¿ xt¿ÙV@.FOÿ%‡¿ xt¿ÙV@4MOÿJï…¿ xt¿ÙV@)DRÿ0R„¿ xt¿ÙV@MKUÿÈõ~¿ xt¿ÙV@:FSÿ!Š|¿ xt¿ÙV@5AVÿy–¿úr¿ÙV@ZZGÿ¼C•¿úr¿ÙV@WPAÿ£¦“¿úr¿ÙV@B3%ÿÐp’¿úr¿ÙV@(`ÿ‘¿ÔQr¿ÙV@¦—ÿ*¿úr¿ÙV@„T~ÿVÏŽ¿ûr¿ÙV@QNMÿƒ™¿úr¿ÙV@XDJÿöÊŒ¿úr¿ÙV@TOVÿñZˆ¿úr¿ÙV@KMNÿ%‡¿úr¿ÙV@CMJÿJï…¿úr¿ÙV@BLJÿ/R„¿úr¿ÙV@JRTÿÈõ~¿úr¿ÙV@MWZÿ”»{¿úr¿ÙV@RU\ÿíOy¿úr¿ÙV@OR[ÿy–¿T¡o¿ÙV@+%0ÿ¼C•¿T¡o¿ÙV@.)ÿé”¿T¡o¿ÙV@+ÿhŽ¿T¡o¿ÙV@Aÿƒ™¿T¡o¿ÙV@<"&ÿðZˆ¿T¡o¿ÙV@581ÿ%‡¿T¡o¿ÙV@154ÿJï…¿T¡o¿ÙV@196ÿ0R„¿T¡o¿ÙV@776ÿ]ƒ¿T¡o¿ÙV@888ÿÈõ~¿T¡o¿ÙV@I:6ÿ”»{¿T¡o¿ÙV@N::ÿíOy¿T¡o¿ÙV@M;:ÿvÜ”¿®5m¿ÙV@ÿÉ“¿Ôðl¿ÙV@ÿhŽ¿®5m¿ÙV@1ÿƒ™¿®5m¿ÙV@ÿöÊŒ¿®5m¿ÙV@ÿÃ‰¿ gl¿ÙV@ÿñZˆ¿®5m¿ÙV@ÿ%‡¿®5m¿ÙV@ÿJï…¿®5m¿ÙV@!ÿ0R„¿®5m¿ÙV@#ÿ]ƒ¿®5m¿ÙV@ÿŠæ¿®5m¿ÙV@ÿ·°€¿®5m¿ÙV@)ÿ¡:¿Ôðl¿ÙV@ÿ”»{¿®5m¿ÙV@ÿíOy¿®5m¿ÙV@ÿvÜ”¿Êj¿ÙV@
-ÿé”¿Êj¿ÙV@ÿhŽ¿zûi¿ÙV@ ÿƒ™¿zûi¿ÙV@'ÿ°cŒ¿{ûi¿ÙV@-ÿ–ÆŠ¿zûi¿ÙV@)ÿÃ‰¿zûi¿ÙV@*ÿ]}ˆ¿T@j¿ÙV@#ÿˆ…¿zûi¿ÙV@*ÿ0R„¿zûi¿ÙV@)ÿ]ƒ¿Êj¿ÙV@
-ÿÄ¿T@j¿ÙV@	-ÿ·°€¿zûi¿ÙV@)ÿÈõ~¿zûi¿ÙV@	$ÿ”»{¿zûi¿ÙV@-ÿíOy¿zûi¿ÙV@(ÿˆ…¿Ôg¿ÙV@/HTÿ0R„¿Ôg¿ÙV@07Pÿ]ƒ¿Ôg¿ÙV@,/SÿŠæ¿Ôg¿ÙV@()Kÿ·°€¿Ôg¿ÙV@-#@ÿÈõ~¿Ôg¿ÙV@,+8ÿ”»{¿Ôg¿ÙV@%-9ÿíOy¿Ôg¿ÙV@ $6ÿFäv¿Ôg¿ÙV@1ÿn>q¿Ôg¿ÙV@$0ÿT¡o¿Ôg¿ÙV@*$8ÿéêƒ¿»òe¿ÙV@WWaÿ]ƒ¿»òe¿ÙV@ORZÿC¿.$e¿ÙV@HV_ÿ·°€¿.$e¿ÙV@M]eÿÈõ~¿.$e¿ÙV@R_iÿ”»{¿.$e¿ÙV@HZdÿíOy¿.$e¿ÙV@DYgÿFäv¿.$e¿ÙV@CVbÿ xt¿.$e¿ÙV@DV\ÿúr¿¡Ud¿ÙV@?XcÿT¡o¿¡Ud¿ÙV@:LSÿÔðl¿Tßd¿ÙV@5;@ÿT@j¿ie¿ÙV@2-7ÿÔg¿.$e¿ÙV@1,5ÿ»òe¿¡Ud¿ÙV@4-8ÿ·°€¿‡¸b¿ÙV@A[ZÿÈõ~¿‡¸b¿ÙV@V`cÿ”»{¿‡¸b¿ÙV@SH[ÿíOy¿‡¸b¿ÙV@`j_ÿFäv¿‡¸b¿ÙV@fdWÿ xt¿‡¸b¿ÙV@ILEÿúr¿‡¸b¿ÙV@KI<ÿT¡o¿‡¸b¿ÙV@CSPÿ®5m¿‡¸b¿ÙV@95Aÿzûi¿‡¸b¿ÙV@7,4ÿÔg¿‡¸b¿ÙV@5.4ÿ»òe¿‡¸b¿ÙV@5/6ÿ
+·óm@ìkN¿4V>?XTXÿ·óm@øþQ¿}A?VPTÿ·óm@r5P¿@éA?WRUÿ·óm@ìkN¿}A?XRVÿ·óm@ä	L¿¾PA?ZZ[ÿ·óm@r5P¿Ç²C?XQUÿ·óm@ìkN¿Ç²C?XRUÿ·óm@£½K¿Ç²C?Z[[ÿ·óm@-ÿ'¿Ç²C?]^\ÿ·óm@ãP%¿Ç²C?[][ÿ·óm@}ÈS¿ÒEG?TNTÿ·óm@r5P¿aF?WQTÿ·óm@ìkN¿aF?XSSÿ·óm@£½K¿aF?Z\[ÿ·óm@ZI¿aF?]a^ÿ·óm@aF¿aF?\a`ÿ·óm@É²C¿aF?]aaÿ·óm@A¿aF?__`ÿ·óm@6V>¿aF?__aÿ·óm@±Œ<¿aF?^aaÿ·óm@gÞ9¿aF?]`_ÿ·óm@07¿aF?__]ÿ·óm@Õ4¿aF?__\ÿ·óm@Ó1¿aF?`_]ÿ·óm@C%/¿aF?a^[ÿ·óm@ûv,¿aF?a]\ÿ·óm@v­*¿aF?_]]ÿ·óm@-ÿ'¿aF?\]]ÿ·óm@ãP%¿aF?\][ÿ·óm@Üî"¿P­F?\]Zÿ·óm@Rô¿aF?[][ÿ·óm@Ì*¿aF?Z]Yÿ·óm@¿ÒEG?_\Yÿ·óm@Íf¿ÒEG?^\Yÿ·óm@„¸¿ÒEG?^\Yÿ·óm@<
+¿ÒEG?^[Yÿ·óm@r5P¿XI?WPQÿ·óm@ìkN¿XI?WSOÿ·óm@£½K¿XI?Y[Zÿ·óm@ZI¿XI?]aaÿ·óm@aF¿XI?]acÿ·óm@É²C¿XI?``aÿ·óm@BéA¿XI?c`aÿ·óm@6V>¿XI?`baÿ·óm@gÞ9¿XI?^_^ÿ·óm@07¿XI?_`]ÿ·óm@Ö4¿XI?]_\ÿ·óm@Ó1¿XI?]_]ÿ·óm@D%/¿XI?^^\ÿ·óm@ûv,¿XI?a^\ÿ·óm@v­*¿XI?_]\ÿ·óm@-ÿ'¿XI?^]\ÿ·óm@ãP%¿XI?^][ÿ·óm@›¢"¿XI?_]Zÿ·óm@Rô¿XI?^][ÿ·óm@	F¿XI?\]\ÿ·óm@À—¿XI?^]\ÿ·óm@:Î¿XI?^\[ÿ·óm@¨q¿XI?^\\ÿ·óm@_Ã¿XI?^[]ÿ·óm@¿XI?^\Zÿ·óm@Íf¿XI?]\Yÿ·óm@„¸¿XI?]\Yÿ·óm@<
+¿XI?]\Zÿ·óm@ó[¿XI?][Zÿ·óm@àØJ¿ÞØJ?Z_^ÿ·óm@ZI¿ÞØJ?]``ÿ·óm@3¿ÞØJ?\_^ÿ·óm@Ó1¿¡½K?[^^ÿ·óm@D%/¿¡½K?\^\ÿ·óm@ûv,¿¡½K?b^\ÿ·óm@v­*¿¡½K?a^]ÿ·óm@-ÿ'¿¡½K?_]^ÿ·óm@ãP%¿¡½K?_]]ÿ·óm@›¢"¿ÞØJ?c][ÿ·óm@Rô¿¡½K?_^[ÿ·óm@	F¿ÞØJ?_][ÿ·óm@À—¿ÞØJ?_\[ÿ·óm@:Î¿ÞØJ?_\Zÿ·óm@ñ¿ÞØJ?^\[ÿ·óm@¨q¿¡½K?^[[ÿ·óm@_Ã¿¡½K?^[[ÿ·óm@¿¡½K?]\Zÿ·óm@Íf¿¡½K?[\Yÿ·óm@„¸¿¡½K?[\Yÿ·óm@<
+¿¡½K?[\Yÿ·óm@ó[¿¡½K?[\Yÿ·óm@m’¿¡½K?[[Yÿ

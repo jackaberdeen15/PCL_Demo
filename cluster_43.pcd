@@ -4,12 +4,9 @@ FIELDS x y z rgba
 SIZE 4 4 4 4
 TYPE F F F U
 COUNT 1 1 1 1
-WIDTH 92
+WIDTH 57
 HEIGHT 1
 VIEWPOINT 0 0 0 1 0 0 0
-POINTS 92
+POINTS 57
 DATA binary
-rR¾Ñ¸/¿”Œ@3ÿ–ÑE¾Ñ¸/¿”Œ@3ÿ f=¾Ñ¸/¿”Œ@2ÿrR¾ž-¿”Œ@4ÿ–ÑE¾ž-¿”Œ@1ÿ f=¾ž-¿”Œ@1ÿ«û4¾ž-¿”Œ@1ÿ:[(¾ž-¿”Œ@4ÿÈº¾ž-¿”Œ@5ÿÒO¾ž-¿”Œ@5ÿ<N¾Uƒ+¿”Œ@4ÿ–ÑE¾öu*¿”Œ@4ÿ f=¾öu*¿”Œ@2ÿ«û4¾öu*¿”Œ@1ÿ:[(¾öu*¿”Œ@1ÿÈº¾öu*¿”Œ@3ÿÒO¾öu*¿”Œ@5ÿÜä
-¾öu*¿”Œ@5ÿôGã½öu*¿”Œ@2ÿrÒ½öu*¿”Œ@2ÿœÁ½öu*¿”Œ@2ÿ f=¾ÛM'¿”Œ@3ÿ«û4¾ÛM'¿”Œ@1ÿµ,¾ÛM'¿”Œ@1ÿÜä
-¾ÛM'¿”Œ@5ÿæy¾ÛM'¿”Œ@5ÿê²ë½ÛM'¿”Œ@3ÿrÒ½ÛM'¿”Œ@2ÿœÁ½ÛM'¿”Œ@1ÿ/Æ°½ÛM'¿”Œ@0ÿ×ˆ|½ÛM'¿”Œ@0ÿýÜZ½ÛM'¿”Œ@0ÿ&19½ÛM'¿”Œ@1ÿM…½ÛM'¿”Œ@0ÿÊ¼ÛM'¿”Œ@/ÿJ¼ÛM'¿”Œ@1ÿ¾%$¾3%¿”Œ@1ÿÈº¾3%¿”Œ@3ÿÜä
-¾3%¿”Œ@5ÿæy¾3%¿”Œ@5ÿôGã½3%¿”Œ@6ÿrÒ½3%¿”Œ@3ÿœÁ½3%¿”Œ@1ÿ/Æ°½3%¿”Œ@0ÿDðŸ½3%¿”Œ@0ÿ×ˆ|½3%¿”Œ@1ÿýÜZ½3%¿”Œ@1ÿ&19½3%¿”Œ@1ÿM…½3%¿”Œ@1ÿÊ¼3%¿”Œ@1ÿJ¼3%¿”Œ@1ÿa¯†»3%¿”Œ@1ÿa¯†;3%¿”Œ@1ÿrÒ½_#¿”Œ@2ÿœÁ½_#¿”Œ@0ÿ/Æ°½_#¿”Œ@/ÿDðŸ½_#¿”Œ@-ÿa¯†½_#¿”Œ@/ÿM…½_#¿”Œ@1ÿÊ¼_#¿”Œ@1ÿJ¼_#¿”Œ@1ÿa¯†»_#¿”Œ@2ÿôGã½¢ý ¿”Œ@1ÿrÒ½Dð¿”Œ@0ÿœÁ½Dð¿”Œ@0ÿ/Æ°½Dð¿”Œ@.ÿDðŸ½Dð¿”Œ@,ÿa¯†½Dð¿”Œ@/ÿýÜZ½åâ¿”Œ@1ÿÉÍ¾¼J ¿”Œ@0ÿJ¼Dð¿”Œ@0ÿa¯†»Dð¿”Œ@2ÿrÒ½'È¿”Œ@1ÿœÁ½'È¿”Œ@1ÿ/Æ°½'È¿”Œ@1ÿDðŸ½'È¿”Œ@1ÿa¯†½'È¿”Œ@1ÿa¯†»'È¿”Œ@0ÿœÁ½j­¿”Œ@1ÿ/Æ°½j­¿”Œ@2ÿDðŸ½j­¿”Œ@3ÿW½j­¿”Œ@2ÿa¯†»j­¿”Œ@0ÿJ¼îw¿”Œ@1ÿa¯†»îw¿”Œ@0ÿa¯†;îw¿”Œ@/ÿJ<îw¿”Œ@0ÿJ¼ÒO¿”Œ@1ÿa¯†»ÒO¿”Œ@/ÿa¯†;ÒO¿”Œ@-ÿJ<ÒO¿”Œ@/ÿ9[¨<tB¿”Œ@1ÿ
+w¾ƒ@,³X¿*Wœ>dSLÿw¾ƒ@¸V¿*Wœ>dSLÿw¾ƒ@RîB¿*Wœ>aQOÿw¾ƒ@uþ<¿*Wœ>bRMÿw¾ƒ@,³X¿iL >aROÿw¾ƒ@=»U¿iL >`ROÿw¾ƒ@‘ãF¿iL >cRPÿw¾ƒ@¢ëC¿iL >`RRÿw¾ƒ@³ó@¿iL >_QUÿw¾ƒ@ù>¿iL >^RSÿw¾ƒ@%<¿iL >aRPÿw¾ƒ@Ë­Z¿F<¦>`QLÿw¾ƒ@,³X¿F<¦>_QKÿw¾ƒ@=»U¿F<¦>^PJÿw¾ƒ@NÃR¿F<¦>\PJÿw¾ƒ@®ÈP¿F<¦>\PJÿw¾ƒ@¿ÐM¿F<¦>^RKÿw¾ƒ@ÐØJ¿F<¦>_PLÿw¾ƒ@1ÞH¿F<¦>^PLÿw¾ƒ@‘ãF¿F<¦>]PMÿw¾ƒ@¢ëC¿F<¦>^PNÿw¾ƒ@³ó@¿F<¦>_NPÿw¾ƒ@ù>¿F<¦>_NNÿw¾ƒ@%<¿F<¦>^PLÿw¾ƒ@6	9¿F<¦>^OJÿw¾ƒ@,³X¿%,¬>_NDÿw¾ƒ@=»U¿%,¬>[MGÿw¾ƒ@NÃR¿%,¬>TMHÿw¾ƒ@®ÈP¿%,¬>YLHÿw¾ƒ@¿ÐM¿%,¬>^OHÿw¾ƒ@ÐØJ¿%,¬>_NIÿw¾ƒ@1ÞH¿%,¬>\MIÿw¾ƒ@‘ãF¿%,¬>ZNFÿw¾ƒ@¢ëC¿%,¬>]MEÿw¾ƒ@³ó@¿%,¬>_MJÿw¾ƒ@ù>¿%,¬>aMGÿw¾ƒ@%<¿%,¬>[NDÿw¾ƒ@6	9¿%,¬>[OGÿw¾ƒ@=»U¿c!°>^NEÿw¾ƒ@NÃR¿c!°>[NGÿw¾ƒ@®ÈP¿c!°>^OGÿw¾ƒ@¿ÐM¿c!°>aOGÿw¾ƒ@ÐØJ¿c!°>bOGÿw¾ƒ@1ÞH¿c!°>`PFÿw¾ƒ@‘ãF¿c!°>^OAÿw¾ƒ@¢ëC¿c!°>^N>ÿw¾ƒ@³ó@¿c!°>aOEÿw¾ƒ@ù>¿c!°>bN@ÿw¾ƒ@%<¿c!°>_P>ÿw¾ƒ@6	9¿c!°>_PEÿw¾ƒ@ÐØJ¿¢´>eTKÿw¾ƒ@1ÞH¿B¶>dVNÿw¾ƒ@‘ãF¿B¶>cVMÿw¾ƒ@¢ëC¿B¶>bULÿw¾ƒ@³ó@¿B¶>cUNÿw¾ƒ@ù>¿¢´>dSHÿw¾ƒ@”U<¿bhµ>dUIÿ

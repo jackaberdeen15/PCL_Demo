@@ -75,8 +75,6 @@ private:
 	void cloud_cb_(const PointCloud<T>::ConstPtr &cloud)
 	{
 		cout << "Entered callback 'View' " << std::endl;
-		cout << "Press enter to continue." << endl;
-		ReadLastCharOfLine();
 
 		timer.tic();
 
@@ -129,6 +127,8 @@ private:
 
 		VoxelGrid<PointT> vxl;
 		vxl.setInputCloud(cloud);
+		//vxl.setFilterFieldName("z");
+		//vxl.setFilterLimits(0.0, 2.1);
 		vxl.setLeafSize(0.01f, 0.01f, 0.01f);
 		vxl.filter(*cloud_filtered);
 
@@ -142,7 +142,8 @@ private:
 		io::savePCDFileBinary(ss.str(), *cloud_filtered);
 		cout << "file " << ss.str() << " saved after " << timer.toc() << "ms." << endl;
 
-		
+		cout << "Press enter to continue." << endl;
+		ReadLastCharOfLine();
 	}
 
 public:

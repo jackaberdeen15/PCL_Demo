@@ -30,6 +30,8 @@
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/ModelCoefficients.h>
 #include <pcl/features/normal_3d.h>
+#include <pcl/common/transforms.h>
+#include <pcl/surface/mls.h>
 
 //custom headers
 #include <C:\Users\Jack\source\repos\pcl_visualizer\build\ICP_Header.h>
@@ -73,15 +75,22 @@ int main(int argc, char** argv[])
 	while (choice != 0)
 	{
 		cout << "Select what you would like to do?" << endl;
-		cout << "1: Perform ICP." << endl;
-		cout << "2: View a Cloud." << endl;
-		cout << "3: Get new Clouds." << endl;
-		cout << "4: Convert existing cloud into a voxel grid(IN PROGRESS)." << endl;
-		cout << "5: Region growing protoype." << endl;
-		cout << "6: Custom ICP pipeline prototype." << endl;
-		cout << "7: Normal distribution transform." << endl;
-		cout << "8: Euclidean Cluster Extraction." << endl;
-		cout << "0: Exit Program." << endl;
+		cout << "1:  Perform ICP." << endl;
+		cout << "2:  View a Cloud." << endl;
+		cout << "3:  Get new Clouds." << endl;
+		cout << "4:  Convert existing cloud into a voxel grid(IN PROGRESS)." << endl;
+		cout << "5:  Region growing protoype." << endl;
+		cout << "6:  Custom ICP pipeline prototype." << endl;
+		cout << "7:  Normal distribution transform." << endl;
+		cout << "8:  Euclidean Cluster Extraction." << endl;
+		cout << "9:  Transformation practice." << endl;
+		cout << "10: Get the centroid of a cluster." << endl;
+		cout << "11: imple matrix rotation." << endl;
+		cout << "12: Insert cube into a cloud." << endl;
+		cout << "13: Align 4 Clouds." << endl;
+		cout << "14: Cloud combine test condition." << endl;
+		cout << "15: Surface smoothing." << endl;
+		cout << "0:  Exit Program." << endl;
 
 		short choice;
 		cin >> choice;
@@ -447,7 +456,7 @@ int main(int argc, char** argv[])
 			VoxelGrid<PointT> vg;
 			vg.setInputCloud(cloud);
 			vg.setFilterFieldName("z");
-			vg.setFilterLimits(0.0, 2.5);
+			vg.setFilterLimits(0.0, 2.1);
 			vg.setLeafSize(0.01f, 0.01f, 0.01f);
 			vg.filter(*cloud_filtered);
 			cout << "PointCloud after filtering has: " << cloud_filtered->points.size() << " data points." << endl; 
@@ -537,6 +546,599 @@ int main(int argc, char** argv[])
 				ss << "cluster_" << j << ".pcd";
 				io::savePCDFileBinary(ss.str(), *cloud_cluster); //saves the cloud of the current cluster
 				j++;
+			}
+
+			break;
+		}
+		case 9:
+		{
+			PointCloudT::Ptr cloud(new PointCloudT);
+			PointCloudT::Ptr cloud_transformed(new PointCloudT);
+
+			cout << "Enter name of target cloud to load: ";
+			string s2;
+			cin >> s2;
+			stringstream ss2;
+			ss2 << s2 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss2.str(), *cloud) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud2(new PointCloudT);
+
+			cout << "Enter name of target cloud to load: ";
+			string s1;
+			cin >> s1;
+			stringstream ss1;
+			ss1 << s1 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss1.str(), *cloud2) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			/*float distance = cloud->points[(cloud->width >> 1) * (cloud->height + 1)].z/1000;
+
+			cout << "distance of center pixel :" << distance << " mm." << endl;
+
+			Eigen::Affine3f transform_1 = Eigen::Affine3f::Identity();
+
+			transform_1.translation() << 0, 0, -distance;
+
+			transform_1.rotate(Eigen::AngleAxisf(0, Eigen::Vector3f::UnitY()));
+
+			cout << transform_1.matrix() << endl;
+
+			transformPointCloud(*cloud, *cloud, transform_1);*/
+			/* 
+			Reminder: how transformation matrices work :
+			
+				   |-------> This column is the translation
+			| 1 0 0 x |  \
+			| 0 1 0 y |   }-> The identity 3x3 matrix (no rotation) on the left
+			| 0 0 1 z |  /
+			| 0 0 0 1 |    -> We do not use this line (and it has to stay 0,0,0,1)
+			
+			*/
+			float theta = - M_PI / 2; // The angle of rotation in radians
+
+			Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
+			
+			// Define a translation of 0.0 meters on the x axis.
+			transform_2.translation() << 0, 0, 0;
+
+			// The same rotation matrix as before; theta radians around Z axis
+			transform_2.rotate(Eigen::AngleAxisf(theta, Eigen::Vector3f::UnitY()));
+
+			// Print the transformation
+			printf("\nMethod using an Affine3f\n");
+			cout << transform_2.matrix() << endl;
+
+			transformPointCloud(*cloud2, *cloud_transformed, transform_2);
+
+			char ok='n';
+
+			while (ok != 'y' && ok!='Y')
+			{
+				cout << "Input translation (x,y,z)." << endl;
+				float x, y, z;
+				x = y = z = 0;
+				cin >> x;
+				cin >> y;
+				cin >> z;
+
+				Eigen::Affine3f transform_3 = Eigen::Affine3f::Identity();
+
+				// Define a translation of 0.0 meters on the x axis.
+				transform_3.translation() << x, y, z;
+
+				// The same rotation matrix as before; theta radians around Z axis
+				transform_3.rotate(Eigen::AngleAxisf(0, Eigen::Vector3f::UnitY()));
+
+				printf("\nMethod using an Affine3f\n");
+				cout << transform_2.matrix() << endl;
+
+				transformPointCloud(*cloud_transformed, *cloud_transformed, transform_3);
+
+				pcl::visualization::PCLVisualizer viewer("Cloud Viewer");
+
+				viewer.addPointCloud(cloud, "Cloud");// note that before it was showCloud
+				viewer.addPointCloud(cloud_transformed, "Transformed Cloud");// note that before it was showCloud
+				viewer.spin();
+
+				cout << "Press Y to end alignment: ";
+				cin >> ok;
+			}
+
+			PointCloudT::Ptr saved_cloud(new PointCloudT);
+
+			*saved_cloud = *cloud;
+			*saved_cloud += *cloud_transformed;
+
+			cout << "Enter name for cloud to be saved under: ";
+			string s3;
+			cin >> s3;
+			stringstream ss3;
+			ss3 << s3 << ".pcd"; //
+
+			if (io::savePCDFileBinary(ss3.str(), *saved_cloud) == -1)
+			{
+				PCL_ERROR("Couldnt save file.\n");
+			}
+			
+			
+			break;
+		}
+		case 10:
+		{
+			PointCloudT::Ptr cloud(new PointCloudT);
+			//PointCloudT::Ptr cloud_transformed(new PointCloudT);
+
+			cout << "Enter name of target cloud to load: ";
+			string s2;
+			cin >> s2;
+			stringstream ss2;
+			ss2 << s2 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss2.str(), *cloud) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+			Eigen::Vector4f centroid;
+
+			compute3DCentroid(*cloud, centroid);
+
+			cout << "x: " << centroid[0] << endl;
+			cout << "y: " << centroid[1] << endl;
+			cout << "z: " << centroid[2] << endl;
+
+			cout << "Press enter to continue." << endl;
+			ReadLastCharOfLine();
+
+			break;
+
+		}
+		case 11:
+		{
+			PointCloudT::Ptr cloud(new PointCloudT);
+			PointCloudT::Ptr cloud_transformed(new PointCloudT);
+
+			cout << "Enter name of target cloud to load: ";
+			string s2;
+			cin >> s2;
+			stringstream ss2;
+			ss2 << s2 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss2.str(), *cloud) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			float theta = M_PI / 2; // The angle of rotation in radians
+
+			Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
+
+			// Define a translation of 0.0 meters on the x axis.
+			transform_2.translation() << 0, 0, 0;
+
+			// The same rotation matrix as before; theta radians around Z axis
+			transform_2.rotate(Eigen::AngleAxisf(theta, Eigen::Vector3f::UnitY()));
+
+			// Print the transformation
+			printf("\nMethod using an Affine3f\n");
+			cout << transform_2.matrix() << endl;
+
+			transformPointCloud(*cloud, *cloud_transformed, transform_2);
+
+			io::savePCDFileBinary("Cloud_rotated.pcd", *cloud_transformed);
+
+			cout << "Press enter to continue." << endl;
+			ReadLastCharOfLine();
+
+			break;
+		}
+		case 12:
+		{
+			PointCloudT::Ptr cloud(new PointCloudT);
+			PointCloudT::Ptr cloud_transformed(new PointCloudT);
+
+			cout << "Enter name of target cloud to load: ";
+			string s2;
+			cin >> s2;
+			stringstream ss2;
+			ss2 << s2 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss2.str(), *cloud) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud_cube(new PointCloudT);
+
+			cout << "Specify size of the cube in cm: ";
+			short centim = 0;
+			cin >> centim;
+
+			cout << "Specify initial coordinates (x,y,z)." << endl;
+			short x0, y0, z0;
+			cin >> x0;
+			cin >> y0;
+			cin >> z0;
+
+			short volume = centim * centim * centim;
+
+			// Fill in the cloud data
+			cloud_cube->width = volume;
+			cloud_cube->height = 1;
+			cloud_cube->is_dense = false;
+			cloud_cube->points.resize(cloud_cube->width * cloud_cube->height);
+
+			int i = 1;
+
+			short x, y, z;
+			x = y = z = 0;
+			for (size_t i = 0; i < cloud_cube->points.size(); ++i)
+			{
+				cloud_cube->points[i].x = x0 + x/100;
+				cloud_cube->points[i].y = y0 + y/100;
+				cloud_cube->points[i].z = z0 + z/100;
+				cloud_cube->points[i].a = 255;
+				cloud_cube->points[i].r = 255;
+				cloud_cube->points[i].b = 255;
+				cloud_cube->points[i].g = 255;
+
+				if (y == centim-1)
+				{
+					x++;
+					z = y = 0;
+				}
+				else if (z == centim-1)
+				{
+					y++;
+					z = 0;
+				}
+				if (x == centim-1) { x = 0; }
+				z++;
+			}
+			
+
+			visualization::PCLVisualizer viewer("Cloud Viewer");
+
+			//viewer.addPointCloud(cloud, "Cloud");// note that before it was showCloud
+			viewer.addPointCloud(cloud_cube, "Transformed Cloud");// note that before it was showCloud
+			viewer.spin();
+
+			break;
+		}
+		case 13:
+		{
+			PointCloudT::Ptr cloud1(new PointCloudT);
+
+			cout << "Enter name of first cloud to load: ";
+			string s1;
+			cin >> s1;
+			stringstream ss1;
+			ss1 << s1 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss1.str(), *cloud1) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud2(new PointCloudT);
+
+			cout << "Enter name of second cloud to load: ";
+			string s2;
+			cin >> s2;
+			stringstream ss2;
+			ss2 << s2 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss2.str(), *cloud2) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud3(new PointCloudT);
+
+			cout << "Enter name of third cloud to load: ";
+			string s3;
+			cin >> s3;
+			stringstream ss3;
+			ss3 << s3 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss3.str(), *cloud3) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud4(new PointCloudT);
+
+			cout << "Enter name of second cloud to load: ";
+			string s4;
+			cin >> s4;
+			stringstream ss4;
+			ss4 << s4 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss4.str(), *cloud4) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			cout << "Do you want to filter the clouds by distance?\n1: Yes.\n2: No." << endl;
+			short filter = 0;
+			cin >> filter;
+			if (filter == 1)
+			{
+				// Create the filtering object
+				PassThrough<PointT> pass1;
+				pass1.setInputCloud(cloud1);
+				pass1.setFilterFieldName("z");
+				pass1.setFilterLimits(0.0, 2.5);
+				//pass.setFilterLimitsNegative (true);
+				pass1.filter(*cloud1);
+
+				PassThrough<PointT> pass2;
+				pass2.setInputCloud(cloud2);
+				pass2.setFilterFieldName("z");
+				pass2.setFilterLimits(0.0, 2.5);
+				//pass.setFilterLimitsNegative (true);
+				pass2.filter(*cloud2);
+
+				PassThrough<PointT> pass3;
+				pass3.setInputCloud(cloud3);
+				pass3.setFilterFieldName("z");
+				pass3.setFilterLimits(0.0, 2.5);
+				//pass.setFilterLimitsNegative (true);
+				pass3.filter(*cloud3);
+
+				PassThrough<PointT> pass4;
+				pass4.setInputCloud(cloud4);
+				pass4.setFilterFieldName("z");
+				pass4.setFilterLimits(0.0, 2.5);
+				//pass.setFilterLimitsNegative (true);
+				pass4.filter(*cloud4);
+			}
+			
+
+			float theta = M_PI / 2; // The angle of rotation in radians
+
+			Eigen::Affine3f transform_1 = Eigen::Affine3f::Identity();
+			Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
+			Eigen::Affine3f transform_3 = Eigen::Affine3f::Identity();
+
+			// Define a translation of x,y,z meters on the appropriate axis.
+			transform_1.translation() << -0.9, 0, 0.9;
+			transform_2.translation() << 0, 0, 1.8;
+			transform_3.translation() << 0.9, 0, 0.9;
+
+			// The same rotation matrix as before; theta radians around Z axis
+			transform_1.rotate(Eigen::AngleAxisf(theta, Eigen::Vector3f::UnitY()));
+			transform_2.rotate(Eigen::AngleAxisf(2 * theta, Eigen::Vector3f::UnitY()));
+			transform_3.rotate(Eigen::AngleAxisf(-theta, Eigen::Vector3f::UnitY()));
+
+			// Print the transformation
+			printf("\nMethod using an Affine3f\n");
+			cout << "First Matrix:" << endl;
+			cout << transform_1.matrix() << endl;
+			cout << "\nSecond Matrix:" << endl;
+			cout << transform_2.matrix() << endl;
+			cout << "\nThird Matrix:" << endl;
+			cout << transform_3.matrix() << endl;
+
+			PointCloudT::Ptr cloud2_transformed(new PointCloudT);
+			PointCloudT::Ptr cloud3_transformed(new PointCloudT);
+			PointCloudT::Ptr cloud4_transformed(new PointCloudT);
+
+			transformPointCloud(*cloud2, *cloud2_transformed, transform_1.matrix());
+			transformPointCloud(*cloud3, *cloud3_transformed, transform_2.matrix());
+			transformPointCloud(*cloud4, *cloud4_transformed, transform_3.matrix());
+
+			PointCloudT::Ptr combined_cloud(new PointCloudT);
+
+			*combined_cloud = *cloud1;
+			*combined_cloud += *cloud2_transformed;
+			*combined_cloud += *cloud3_transformed;
+			*combined_cloud += *cloud4_transformed;
+
+			visualization::PCLVisualizer viewer("Cloud Viewer");
+			viewer.addPointCloud(combined_cloud, "Combined Cloud");
+			viewer.spin();
+
+			cout << "Enter name for cloud to be saved under: ";
+			string ss;
+			cin >> ss;
+			stringstream sss;
+			sss << ss << ".pcd"; //
+
+			if (io::savePCDFileBinary(sss.str(), *combined_cloud) == -1)
+			{
+				PCL_ERROR("Couldnt save file.\n");
+			}
+
+			cout << "Combine with Master Cloud?" << endl;
+			cout << "1: Yes." << endl;
+			cout << "2: No." << endl;
+			short combine = 0;
+			cin >> combine;
+
+			if (combine == 1)
+			{
+				PointCloudT::Ptr master_cloud(new PointCloudT);
+
+				cout << "Enter name of master cloud to load: ";
+				string sm;
+				cin >> sm;
+				stringstream ssm;
+				ssm << sm << ".pcd"; //
+
+				if (io::loadPCDFile<PointT>(ssm.str(), *master_cloud) == -1)
+				{
+					PCL_ERROR("Couldnt read file.\n");
+				}
+
+				PointCloudT::Ptr new_master_cloud(new PointCloudT);
+
+				*new_master_cloud = *master_cloud;
+				*new_master_cloud += *combined_cloud;
+
+				visualization::PCLVisualizer viewer2("Cloud Viewer");
+				viewer2.addPointCloud(new_master_cloud, "New Master Cloud");
+				viewer2.spin();
+
+				cout << "Do you want to update the master cloud?" << endl;
+				cout << "1: Yes." << endl;
+				cout << "2: No." << endl;
+				short update = 0;
+				cin >> update;
+
+				if (update == 1)
+				{
+					if (io::savePCDFileBinary(ssm.str(), *new_master_cloud) == -1)
+					{
+						PCL_ERROR("Couldnt save file.\n");
+					}
+				}
+
+			}
+
+
+			break;
+		}
+		case 14:
+		{
+			PointCloudT::Ptr cloud1(new PointCloudT);
+			PointCloudT::Ptr cloud2(new PointCloudT);
+
+			// Fill in the cloud data
+			cloud1->width = 8;
+			cloud1->height = 1;
+			cloud1->points.resize(cloud1->width * cloud1->height);
+
+			for (size_t i = 0; i < cloud1->points.size(); ++i)
+			{
+				//srand(6254);
+				cloud1->points[i].x = rand() % 3;
+				cloud1->points[i].y = rand() % 3;
+				cloud1->points[i].z = rand() % 3;
+				cloud1->points[i].r = rand() % 256;
+				cloud1->points[i].g = rand() % 256;
+				cloud1->points[i].b = rand() % 256;
+				cloud1->points[i].a = 255;
+			}
+
+			// Fill in the cloud data
+			short width = 10;
+			cloud2->width = width;
+			cloud2->height = 1;
+			cloud2->points.resize(cloud2->width * cloud2->height);
+
+			for (size_t i = 0; i < cloud2->points.size()-1; ++i)
+			{
+				//srand(2465);
+				cloud2->points[i].x = rand() % 3;
+				cloud2->points[i].y = rand() % 3;
+				cloud2->points[i].z = rand() % 3;
+				cloud2->points[i].r = rand() % 256;
+				cloud2->points[i].g = rand() % 256;
+				cloud2->points[i].b = rand() % 256;
+				cloud2->points[i].a = 255;
+			}
+			cloud2->points[width-1].x = 2;
+			cloud2->points[width-1].y = 2;
+			cloud2->points[width-1].z = 1;
+			cloud2->points[width-1].r = 255;
+			cloud2->points[width-1].g = 0;
+			cloud2->points[width-1].b = 0;
+			cloud2->points[width-1].a = 255;
+
+			cout << "Cloud1: " << endl;
+			for (size_t i = 0; i < cloud1->points.size(); ++i)
+				cout << "    Point " << i << ", pos (" << cloud1->points[i].x << ","
+				<< cloud1->points[i].y << ","
+				<< cloud1->points[i].z << ") col ("
+				<< (int)cloud1->points[i].r << ","
+				<< (int)cloud1->points[i].g << ","
+				<< (int)cloud1->points[i].b << ","
+				<< (int)cloud1->points[i].a << ")." << endl;
+
+			cout << "\n\nCloud2: " << endl;
+			for (size_t i = 0; i < cloud2->points.size(); ++i)
+				cout << "    Point " << i << ", pos (" << cloud2->points[i].x << ","
+				<< cloud2->points[i].y << ","
+				<< cloud2->points[i].z << ") col ("
+				<< (int)cloud2->points[i].r << ","
+				<< (int)cloud2->points[i].g << ","
+				<< (int)cloud2->points[i].b << ","
+				<< (int)cloud2->points[i].a << ")." << endl;
+
+			PointCloudT::Ptr combined_cloud(new PointCloudT);
+
+			*combined_cloud = *cloud1;
+			*combined_cloud += *cloud2;
+
+			cout << "\n\nThe two combined: " << endl;
+			for (size_t i = 0; i < combined_cloud->points.size(); ++i)
+				cout << "    Point " << i << ", pos (" << combined_cloud->points[i].x << ","
+				<< combined_cloud->points[i].y << ","
+				<< combined_cloud->points[i].z << ") col ("
+				<< (int)combined_cloud->points[i].r << ","
+				<< (int)combined_cloud->points[i].g << ","
+				<< (int)combined_cloud->points[i].b << ","
+				<< (int)combined_cloud->points[i].a << ")." << endl;
+
+
+			visualization::PCLVisualizer viewer("Cloud Viewer");
+			viewer.addPointCloud(combined_cloud, "Combined Cloud");
+			viewer.spin();
+
+		}
+		case 15:
+		{
+			// Load input file into a PointCloud<T> with an appropriate type
+			PointCloudT::Ptr cloud(new PointCloudT);
+
+			cout << "Enter name of first cloud to load: ";
+			string s1;
+			cin >> s1;
+			stringstream ss1;
+			ss1 << s1 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss1.str(), *cloud) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			// Create a KD-Tree
+			search::KdTree<PointT>::Ptr tree(new search::KdTree<PointT>);
+
+			// Output has the PointNormal type in order to store the normals calculated by MLS
+			PointCloud<PointNormal> mls_points;
+
+			// Init object (second point type is for the normals, even if unused)
+			MovingLeastSquares<PointT, PointNormal> mls;
+
+			mls.setComputeNormals(true);
+
+			// Set parameters
+			mls.setInputCloud(cloud);
+			mls.setPolynomialOrder(2);
+			mls.setSearchMethod(tree);
+			mls.setSearchRadius(0.05);
+
+			// Reconstruct
+			mls.process(mls_points);
+
+			cout << "Enter name to save cloud under: ";
+			string ss;
+			cin >> ss;
+			stringstream sss;
+			sss << ss << ".pcd"; //
+
+			if (io::savePCDFileBinary(sss.str(), mls_points) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
 			}
 
 			break;
