@@ -87,9 +87,12 @@ int main(int argc, char** argv[])
 		cout << "10: Get the centroid of a cluster." << endl;
 		cout << "11: imple matrix rotation." << endl;
 		cout << "12: Insert cube into a cloud." << endl;
-		cout << "13: Align 4 Clouds." << endl;
-		cout << "14: Cloud combine test condition." << endl;
+		cout << "13: Align 8 Clouds." << endl;
+		cout << "14: Creating a square outline in a cloud." << endl;
 		cout << "15: Surface smoothing." << endl;
+		cout << "16: Voxelise a cloud." << endl;
+		cout << "17: Add boudning boxes" << endl;
+		cout << "18: Colour Filtering." << endl;
 		cout << "0:  Exit Program." << endl;
 
 		short choice;
@@ -520,7 +523,7 @@ int main(int argc, char** argv[])
 
 
 			EuclideanClusterExtraction<PointT> ec;
-			ec.setClusterTolerance(0.02); // 2cm
+			ec.setClusterTolerance(0.10); // 2cm
 			ec.setMinClusterSize(50);
 			ec.setMaxClusterSize(25000);
 			ec.setSearchMethod(tree);
@@ -816,7 +819,7 @@ int main(int argc, char** argv[])
 		{
 			PointCloudT::Ptr cloud1(new PointCloudT);
 
-			cout << "Enter name of first cloud to load: ";
+			cout << "Enter name of first cloud to load (0*pi): ";
 			string s1;
 			cin >> s1;
 			stringstream ss1;
@@ -829,7 +832,7 @@ int main(int argc, char** argv[])
 
 			PointCloudT::Ptr cloud2(new PointCloudT);
 
-			cout << "Enter name of second cloud to load: ";
+			cout << "Enter name of second cloud to load (pi/4): ";
 			string s2;
 			cin >> s2;
 			stringstream ss2;
@@ -842,7 +845,7 @@ int main(int argc, char** argv[])
 
 			PointCloudT::Ptr cloud3(new PointCloudT);
 
-			cout << "Enter name of third cloud to load: ";
+			cout << "Enter name of third cloud to load (pi/2): ";
 			string s3;
 			cin >> s3;
 			stringstream ss3;
@@ -855,7 +858,7 @@ int main(int argc, char** argv[])
 
 			PointCloudT::Ptr cloud4(new PointCloudT);
 
-			cout << "Enter name of second cloud to load: ";
+			cout << "Enter name of fourth cloud to load (3*pi/4): ";
 			string s4;
 			cin >> s4;
 			stringstream ss4;
@@ -866,57 +869,150 @@ int main(int argc, char** argv[])
 				PCL_ERROR("Couldnt read file.\n");
 			}
 
+			PointCloudT::Ptr cloud5(new PointCloudT);
+
+			cout << "Enter name of fifth cloud to load (pi): ";
+			string s5;
+			cin >> s5;
+			stringstream ss5;
+			ss5 << s5 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss5.str(), *cloud5) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud6(new PointCloudT);
+
+			cout << "Enter name of sixth cloud to load (5*pi/4): ";
+			string s6;
+			cin >> s6;
+			stringstream ss6;
+			ss6 << s6 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss6.str(), *cloud6) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud7(new PointCloudT);
+
+			cout << "Enter name of seventh cloud to load (6*pi/2): ";
+			string s7;
+			cin >> s7;
+			stringstream ss7;
+			ss7 << s7 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss7.str(), *cloud7) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud8(new PointCloudT);
+
+			cout << "Enter name of eighth cloud to load (7*pi/4): ";
+			string s8;
+			cin >> s8;
+			stringstream ss8;
+			ss8 << s8 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss8.str(), *cloud8) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
 			cout << "Do you want to filter the clouds by distance?\n1: Yes.\n2: No." << endl;
 			short filter = 0;
 			cin >> filter;
 			if (filter == 1)
 			{
+				float filt_min = 0.0, filt_max = 1.8;
 				// Create the filtering object
 				PassThrough<PointT> pass1;
 				pass1.setInputCloud(cloud1);
 				pass1.setFilterFieldName("z");
-				pass1.setFilterLimits(0.0, 2.5);
+				pass1.setFilterLimits(filt_min, filt_max);
 				//pass.setFilterLimitsNegative (true);
 				pass1.filter(*cloud1);
 
 				PassThrough<PointT> pass2;
 				pass2.setInputCloud(cloud2);
 				pass2.setFilterFieldName("z");
-				pass2.setFilterLimits(0.0, 2.5);
+				pass2.setFilterLimits(filt_min, filt_max);
 				//pass.setFilterLimitsNegative (true);
 				pass2.filter(*cloud2);
 
 				PassThrough<PointT> pass3;
 				pass3.setInputCloud(cloud3);
 				pass3.setFilterFieldName("z");
-				pass3.setFilterLimits(0.0, 2.5);
+				pass3.setFilterLimits(filt_min, filt_max);
 				//pass.setFilterLimitsNegative (true);
 				pass3.filter(*cloud3);
 
 				PassThrough<PointT> pass4;
 				pass4.setInputCloud(cloud4);
 				pass4.setFilterFieldName("z");
-				pass4.setFilterLimits(0.0, 2.5);
+				pass4.setFilterLimits(filt_min, filt_max);
 				//pass.setFilterLimitsNegative (true);
 				pass4.filter(*cloud4);
+
+				PassThrough<PointT> pass5;
+				pass5.setInputCloud(cloud5);
+				pass5.setFilterFieldName("z");
+				pass5.setFilterLimits(filt_min, filt_max);
+				//pass.setFilterLimitsNegative (true);
+				pass5.filter(*cloud5);
+
+				PassThrough<PointT> pass6;
+				pass6.setInputCloud(cloud6);
+				pass6.setFilterFieldName("z");
+				pass6.setFilterLimits(filt_min, filt_max);
+				//pass.setFilterLimitsNegative (true);
+				pass6.filter(*cloud6);
+
+				PassThrough<PointT> pass7;
+				pass7.setInputCloud(cloud7);
+				pass7.setFilterFieldName("z");
+				pass7.setFilterLimits(filt_min, filt_max);
+				//pass.setFilterLimitsNegative (true);
+				pass7.filter(*cloud7);
+
+				PassThrough<PointT> pass8;
+				pass8.setInputCloud(cloud8);
+				pass8.setFilterFieldName("z");
+				pass8.setFilterLimits(filt_min, filt_max);
+				//pass.setFilterLimitsNegative (true);
+				pass8.filter(*cloud8);
 			}
 			
 
-			float theta = M_PI / 2; // The angle of rotation in radians
+			float theta = M_PI / 4; // The angle of rotation in radians (45 degrees)
 
-			Eigen::Affine3f transform_1 = Eigen::Affine3f::Identity();
-			Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
-			Eigen::Affine3f transform_3 = Eigen::Affine3f::Identity();
+			Eigen::Affine3f transform_1 = Eigen::Affine3f::Identity(); //45 degrees
+			Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity(); //90 degrees
+			Eigen::Affine3f transform_3 = Eigen::Affine3f::Identity(); //135 degrees
+			Eigen::Affine3f transform_4 = Eigen::Affine3f::Identity(); //180 degrees
+			Eigen::Affine3f transform_5 = Eigen::Affine3f::Identity(); //225 degrees
+			Eigen::Affine3f transform_6 = Eigen::Affine3f::Identity(); //270 degrees
+			Eigen::Affine3f transform_7 = Eigen::Affine3f::Identity(); //315 degrees
 
-			// Define a translation of x,y,z meters on the appropriate axis.
-			transform_1.translation() << -0.9, 0, 0.9;
-			transform_2.translation() << 0, 0, 1.8;
-			transform_3.translation() << 0.9, 0, 0.9;
+			// Define a translation of x,y,z meters on the appropriate axis
+			transform_1.translation() << -0.636, 0, 0.9 - 0.636;	//45 degrees
+			transform_2.translation() << -0.9, 0, 0.9;					//90 degrees
+			transform_3.translation() << -0.636, 0, 0.9 + 0.636;	//135 degrees
+			transform_4.translation() << 0, 0, 1.8;						//180 degrees
+			transform_5.translation() << 0.636, 0, 0.9 + 0.636;	//225 degrees
+			transform_6.translation() << 0.9, 0, 0.9;					//270 degrees
+			transform_7.translation() << 0.636, 0, 0.9 - 0.636;	//315 degrees
 
 			// The same rotation matrix as before; theta radians around Z axis
-			transform_1.rotate(Eigen::AngleAxisf(theta, Eigen::Vector3f::UnitY()));
-			transform_2.rotate(Eigen::AngleAxisf(2 * theta, Eigen::Vector3f::UnitY()));
-			transform_3.rotate(Eigen::AngleAxisf(-theta, Eigen::Vector3f::UnitY()));
+			transform_1.rotate(Eigen::AngleAxisf(1 * theta, Eigen::Vector3f::UnitY()));	//45 degrees
+			transform_2.rotate(Eigen::AngleAxisf(2 * theta, Eigen::Vector3f::UnitY())); //90 degrees
+			transform_3.rotate(Eigen::AngleAxisf(3 * theta, Eigen::Vector3f::UnitY())); //135 degrees
+			transform_4.rotate(Eigen::AngleAxisf(4 * theta, Eigen::Vector3f::UnitY())); //180 degrees
+			transform_5.rotate(Eigen::AngleAxisf(-3 * theta, Eigen::Vector3f::UnitY()));//225 degrees
+			transform_6.rotate(Eigen::AngleAxisf(-2 * theta, Eigen::Vector3f::UnitY()));//270 degrees
+			transform_7.rotate(Eigen::AngleAxisf(-1 * theta, Eigen::Vector3f::UnitY()));//315 degrees
 
 			// Print the transformation
 			printf("\nMethod using an Affine3f\n");
@@ -926,14 +1022,177 @@ int main(int argc, char** argv[])
 			cout << transform_2.matrix() << endl;
 			cout << "\nThird Matrix:" << endl;
 			cout << transform_3.matrix() << endl;
+			cout << "\nFourth Matrix:" << endl;
+			cout << transform_4.matrix() << endl;
+			cout << "\nFifth Matrix:" << endl;
+			cout << transform_5.matrix() << endl;
+			cout << "\nSixth Matrix:" << endl;
+			cout << transform_6.matrix() << endl;
+			cout << "\nSeventh Matrix:" << endl;
+			cout << transform_7.matrix() << endl;
 
 			PointCloudT::Ptr cloud2_transformed(new PointCloudT);
 			PointCloudT::Ptr cloud3_transformed(new PointCloudT);
 			PointCloudT::Ptr cloud4_transformed(new PointCloudT);
+			PointCloudT::Ptr cloud5_transformed(new PointCloudT);
+			PointCloudT::Ptr cloud6_transformed(new PointCloudT);
+			PointCloudT::Ptr cloud7_transformed(new PointCloudT);
+			PointCloudT::Ptr cloud8_transformed(new PointCloudT);
 
-			transformPointCloud(*cloud2, *cloud2_transformed, transform_1.matrix());
-			transformPointCloud(*cloud3, *cloud3_transformed, transform_2.matrix());
-			transformPointCloud(*cloud4, *cloud4_transformed, transform_3.matrix());
+			cout << "Use ICP to increase accuracy (increases compilation time)?\n1: Yes.\n2: No." << endl;
+			short use_icp = 0;
+			cin >> use_icp;
+			if (use_icp == 1)
+			{
+				short max_iterations = 40;
+				int corres_dist = 10; //cm
+				double trans_epsilon = 1e-9;
+				double fit_epsilon = 0.5;
+				double reject_thresh = 0.05;
+
+				//cloud2 alignment
+				IterativeClosestPoint<PointT, PointT> icp1;
+				// set the input and target
+				icp1.setInputSource(cloud2);
+				icp1.setInputTarget(cloud1);
+				// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
+				icp1.setMaxCorrespondenceDistance(corres_dist);
+				// Set the maximum number of iterations (criterion 1)
+				icp1.setMaximumIterations(max_iterations);
+				// Set the transformation epsilon (criterion 2)
+				icp1.setTransformationEpsilon(trans_epsilon);
+				// Set the euclidean distance difference epsilon (criterion 3)
+				icp1.setEuclideanFitnessEpsilon(fit_epsilon);
+
+				icp1.setRANSACOutlierRejectionThreshold(reject_thresh);
+				icp1.setRANSACIterations(max_iterations);
+
+				icp1.align(*cloud2_transformed,transform_1.matrix());
+
+				//cloud3 alignment
+				IterativeClosestPoint<PointT, PointT> icp2;
+				// set the input and target
+				icp2.setInputSource(cloud3);
+				icp2.setInputTarget(cloud1);
+				// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
+				icp2.setMaxCorrespondenceDistance(corres_dist);
+				// Set the maximum number of iterations (criterion 1)
+				icp2.setMaximumIterations(max_iterations);
+				// Set the transformation epsilon (criterion 2)
+				icp2.setTransformationEpsilon(trans_epsilon);
+				// Set the euclidean distance difference epsilon (criterion 3)
+				icp2.setEuclideanFitnessEpsilon(fit_epsilon);
+
+				icp2.setRANSACOutlierRejectionThreshold(reject_thresh);
+				icp2.setRANSACIterations(max_iterations);
+
+				icp2.align(*cloud3_transformed, transform_2.matrix());
+
+				//cloud4 alignment
+				IterativeClosestPoint<PointT, PointT> icp3;
+				// set the input and target
+				icp3.setInputSource(cloud4);
+				icp3.setInputTarget(cloud1);
+				// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
+				icp3.setMaxCorrespondenceDistance(corres_dist);
+				// Set the maximum number of iterations (criterion 1)
+				icp3.setMaximumIterations(max_iterations);
+				// Set the transformation epsilon (criterion 2)
+				icp3.setTransformationEpsilon(trans_epsilon);
+				// Set the euclidean distance difference epsilon (criterion 3)
+				icp3.setEuclideanFitnessEpsilon(fit_epsilon);
+
+				icp3.setRANSACOutlierRejectionThreshold(reject_thresh);
+				icp3.setRANSACIterations(max_iterations);
+
+				icp3.align(*cloud4_transformed, transform_3.matrix());
+
+				//cloud5 alignment
+				IterativeClosestPoint<PointT, PointT> icp4;
+				// set the input and target
+				icp4.setInputSource(cloud5);
+				icp4.setInputTarget(cloud1);
+				// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
+				icp4.setMaxCorrespondenceDistance(corres_dist);
+				// Set the maximum number of iterations (criterion 1)
+				icp4.setMaximumIterations(max_iterations);
+				// Set the transformation epsilon (criterion 2)
+				icp4.setTransformationEpsilon(trans_epsilon);
+				// Set the euclidean distance difference epsilon (criterion 3)
+				icp4.setEuclideanFitnessEpsilon(fit_epsilon);
+
+				icp4.setRANSACOutlierRejectionThreshold(reject_thresh);
+				icp4.setRANSACIterations(max_iterations);
+
+				icp4.align(*cloud5_transformed, transform_4.matrix());
+
+				//cloud4 alignment
+				IterativeClosestPoint<PointT, PointT> icp5;
+				// set the input and target
+				icp5.setInputSource(cloud6);
+				icp5.setInputTarget(cloud1);
+				// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
+				icp5.setMaxCorrespondenceDistance(corres_dist);
+				// Set the maximum number of iterations (criterion 1)
+				icp5.setMaximumIterations(max_iterations);
+				// Set the transformation epsilon (criterion 2)
+				icp5.setTransformationEpsilon(trans_epsilon);
+				// Set the euclidean distance difference epsilon (criterion 3)
+				icp5.setEuclideanFitnessEpsilon(fit_epsilon);
+
+				icp5.setRANSACOutlierRejectionThreshold(reject_thresh);
+				icp5.setRANSACIterations(max_iterations);
+
+				icp5.align(*cloud6_transformed, transform_5.matrix());
+
+				//cloud4 alignment
+				IterativeClosestPoint<PointT, PointT> icp6;
+				// set the input and target
+				icp6.setInputSource(cloud7);
+				icp6.setInputTarget(cloud1);
+				// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
+				icp6.setMaxCorrespondenceDistance(corres_dist);
+				// Set the maximum number of iterations (criterion 1)
+				icp6.setMaximumIterations(max_iterations);
+				// Set the transformation epsilon (criterion 2)
+				icp6.setTransformationEpsilon(trans_epsilon);
+				// Set the euclidean distance difference epsilon (criterion 3)
+				icp6.setEuclideanFitnessEpsilon(fit_epsilon);
+
+				icp6.setRANSACOutlierRejectionThreshold(reject_thresh);
+				icp6.setRANSACIterations(max_iterations);
+
+				icp6.align(*cloud7_transformed, transform_6.matrix());
+
+				//cloud4 alignment
+				IterativeClosestPoint<PointT, PointT> icp7;
+				// set the input and target
+				icp7.setInputSource(cloud8);
+				icp7.setInputTarget(cloud1);
+				// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored)
+				icp7.setMaxCorrespondenceDistance(corres_dist);
+				// Set the maximum number of iterations (criterion 1)
+				icp7.setMaximumIterations(max_iterations);
+				// Set the transformation epsilon (criterion 2)
+				icp7.setTransformationEpsilon(trans_epsilon);
+				// Set the euclidean distance difference epsilon (criterion 3)
+				icp7.setEuclideanFitnessEpsilon(fit_epsilon);
+
+				icp7.setRANSACOutlierRejectionThreshold(reject_thresh);
+				icp7.setRANSACIterations(max_iterations);
+
+				icp7.align(*cloud8_transformed, transform_7.matrix());
+			}
+			else 
+			{
+				transformPointCloud(*cloud2, *cloud2_transformed, transform_1.matrix());
+				transformPointCloud(*cloud3, *cloud3_transformed, transform_2.matrix());
+				transformPointCloud(*cloud4, *cloud4_transformed, transform_3.matrix());
+				transformPointCloud(*cloud5, *cloud5_transformed, transform_4.matrix());
+				transformPointCloud(*cloud6, *cloud6_transformed, transform_5.matrix());
+				transformPointCloud(*cloud7, *cloud7_transformed, transform_6.matrix());
+				transformPointCloud(*cloud8, *cloud8_transformed, transform_7.matrix());
+			}
 
 			PointCloudT::Ptr combined_cloud(new PointCloudT);
 
@@ -941,6 +1200,10 @@ int main(int argc, char** argv[])
 			*combined_cloud += *cloud2_transformed;
 			*combined_cloud += *cloud3_transformed;
 			*combined_cloud += *cloud4_transformed;
+			*combined_cloud += *cloud5_transformed;
+			*combined_cloud += *cloud6_transformed;
+			*combined_cloud += *cloud7_transformed;
+			*combined_cloud += *cloud8_transformed;
 
 			visualization::PCLVisualizer viewer("Cloud Viewer");
 			viewer.addPointCloud(combined_cloud, "Combined Cloud");
@@ -1008,89 +1271,69 @@ int main(int argc, char** argv[])
 		}
 		case 14:
 		{
-			PointCloudT::Ptr cloud1(new PointCloudT);
-			PointCloudT::Ptr cloud2(new PointCloudT);
+			PointCloudT::Ptr cloud(new PointCloudT);
 
-			// Fill in the cloud data
-			cloud1->width = 8;
-			cloud1->height = 1;
-			cloud1->points.resize(cloud1->width * cloud1->height);
+			cloud->width = 40000;
+			cloud->height = 1;
+			cloud->resize(cloud->height * cloud->width);
+			float xmax = 210.0;
+			float zmax = 210.0;
+			int i = 0;
 
-			for (size_t i = 0; i < cloud1->points.size(); ++i)
+			for (float x = 0; x <= xmax; x+=1.0)
 			{
-				//srand(6254);
-				cloud1->points[i].x = rand() % 3;
-				cloud1->points[i].y = rand() % 3;
-				cloud1->points[i].z = rand() % 3;
-				cloud1->points[i].r = rand() % 256;
-				cloud1->points[i].g = rand() % 256;
-				cloud1->points[i].b = rand() % 256;
-				cloud1->points[i].a = 255;
+				for (float z = 0; z <= zmax; z+=1)
+				{
+					cout << x << "," << z << endl;
+					if ((x <= xmax && x >= (xmax - 10.0)) || (z <= zmax && z >= (zmax - 10.0)))
+					{
+						cout << "entered if condition." << endl;
+						++i;
+						cloud->points[i].x = x / 100.0;
+						cloud->points[i].y = 0.0;
+						cloud->points[i].z = z / 100.0;
+						cloud->points[i].r = 127;
+						cloud->points[i].g = 0;
+						cloud->points[i].b = 255;
+						cloud->points[i].a = 255;
+						cout << i << endl;
+						cout << cloud->points[i].x << endl;
+						++i;
+						cloud->points[i].x = -x / 100;
+						cloud->points[i].y = 0;
+						cloud->points[i].z = z / 100;
+						cloud->points[i].r = 127;
+						cloud->points[i].g = 0;
+						cloud->points[i].b = 255;
+						cloud->points[i].a = 255;
+						cout << i << endl;
+						cout << cloud->points[i].x << endl;
+						++i;
+						cloud->points[i].x = x / 100;
+						cloud->points[i].y = 0;
+						cloud->points[i].z = -z / 100;
+						cloud->points[i].r = 127;
+						cloud->points[i].g = 0;
+						cloud->points[i].b = 255;
+						cloud->points[i].a = 255;
+						cout << cloud->points[i] << endl;
+						++i;
+						cloud->points[i].x = -x / 100;
+						cloud->points[i].y = 0;
+						cloud->points[i].z = -z / 100;
+						cloud->points[i].r = 127;
+						cloud->points[i].g = 0;
+						cloud->points[i].b = 255;
+						cloud->points[i].a = 255;
+						cout << i << endl;
+						cout << cloud->points[i].x << endl;
+					}
+				}
 			}
-
-			// Fill in the cloud data
-			short width = 10;
-			cloud2->width = width;
-			cloud2->height = 1;
-			cloud2->points.resize(cloud2->width * cloud2->height);
-
-			for (size_t i = 0; i < cloud2->points.size()-1; ++i)
-			{
-				//srand(2465);
-				cloud2->points[i].x = rand() % 3;
-				cloud2->points[i].y = rand() % 3;
-				cloud2->points[i].z = rand() % 3;
-				cloud2->points[i].r = rand() % 256;
-				cloud2->points[i].g = rand() % 256;
-				cloud2->points[i].b = rand() % 256;
-				cloud2->points[i].a = 255;
-			}
-			cloud2->points[width-1].x = 2;
-			cloud2->points[width-1].y = 2;
-			cloud2->points[width-1].z = 1;
-			cloud2->points[width-1].r = 255;
-			cloud2->points[width-1].g = 0;
-			cloud2->points[width-1].b = 0;
-			cloud2->points[width-1].a = 255;
-
-			cout << "Cloud1: " << endl;
-			for (size_t i = 0; i < cloud1->points.size(); ++i)
-				cout << "    Point " << i << ", pos (" << cloud1->points[i].x << ","
-				<< cloud1->points[i].y << ","
-				<< cloud1->points[i].z << ") col ("
-				<< (int)cloud1->points[i].r << ","
-				<< (int)cloud1->points[i].g << ","
-				<< (int)cloud1->points[i].b << ","
-				<< (int)cloud1->points[i].a << ")." << endl;
-
-			cout << "\n\nCloud2: " << endl;
-			for (size_t i = 0; i < cloud2->points.size(); ++i)
-				cout << "    Point " << i << ", pos (" << cloud2->points[i].x << ","
-				<< cloud2->points[i].y << ","
-				<< cloud2->points[i].z << ") col ("
-				<< (int)cloud2->points[i].r << ","
-				<< (int)cloud2->points[i].g << ","
-				<< (int)cloud2->points[i].b << ","
-				<< (int)cloud2->points[i].a << ")." << endl;
-
-			PointCloudT::Ptr combined_cloud(new PointCloudT);
-
-			*combined_cloud = *cloud1;
-			*combined_cloud += *cloud2;
-
-			cout << "\n\nThe two combined: " << endl;
-			for (size_t i = 0; i < combined_cloud->points.size(); ++i)
-				cout << "    Point " << i << ", pos (" << combined_cloud->points[i].x << ","
-				<< combined_cloud->points[i].y << ","
-				<< combined_cloud->points[i].z << ") col ("
-				<< (int)combined_cloud->points[i].r << ","
-				<< (int)combined_cloud->points[i].g << ","
-				<< (int)combined_cloud->points[i].b << ","
-				<< (int)combined_cloud->points[i].a << ")." << endl;
 
 
 			visualization::PCLVisualizer viewer("Cloud Viewer");
-			viewer.addPointCloud(combined_cloud, "Combined Cloud");
+			viewer.addPointCloud(cloud, "Cloud");
 			viewer.spin();
 
 		}
@@ -1115,6 +1358,8 @@ int main(int argc, char** argv[])
 
 			// Output has the PointNormal type in order to store the normals calculated by MLS
 			PointCloud<PointNormal> mls_points;
+			//PointCloudT::Ptr mls_points(new PointCloudT);
+
 
 			// Init object (second point type is for the normals, even if unused)
 			MovingLeastSquares<PointT, PointNormal> mls;
@@ -1140,6 +1385,203 @@ int main(int argc, char** argv[])
 			{
 				PCL_ERROR("Couldnt read file.\n");
 			}
+
+			break;
+		}
+		case 16:
+		{
+			PointCloudT::Ptr cloud(new PointCloudT);
+
+			cout << "Enter name of first cloud to load (0*pi): ";
+			string s1;
+			cin >> s1;
+			stringstream ss1;
+			ss1 << s1 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss1.str(), *cloud) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			PointCloudT::Ptr cloud_voxel(new PointCloudT);
+
+			cout << "Point Cloud before filtering: " << cloud->width * cloud->height << " data points (" << getFieldsList(*cloud) << ")." << endl;
+
+			VoxelGrid<PointT> vxl;
+			vxl.setInputCloud(cloud);
+			//vxl.setFilterFieldName("z");
+			//vxl.setFilterLimits(0.0, 2.1);
+			vxl.setLeafSize(0.01f, 0.01f, 0.01f);
+			vxl.filter(*cloud_voxel);
+
+			cout << "PointCloud after filtering: " << cloud_voxel->width * cloud_voxel->height
+				<< " data points (" << getFieldsList(*cloud_voxel) << ")." << endl;
+
+			visualization::PCLVisualizer viewer("Cloud Viewer");
+			viewer.addPointCloud(cloud, "Cloud");
+			viewer.spin();
+
+			cout << "Enter name for downsampled cloud." << endl;
+			string sn;
+			cin >> sn;
+			stringstream ss;
+			ss << sn << ".pcd"; //
+			io::savePCDFileBinary(ss.str(), *cloud_voxel);
+
+
+		}
+		case 17: 
+		{
+			PointCloudT::Ptr cloud(new PointCloudT), cloud_f(new PointCloudT);
+			PointCloudT::Ptr cloud_filtered(new PointCloudT);
+			PointIndicesPtr ground(new PointIndices);
+			vector<PointIndices> cluster_indices;
+
+			cout << "Enter name of target cloud to load: ";
+			string s2;
+			cin >> s2;
+			stringstream ss2;
+			ss2 << s2 << ".pcd"; //
+
+			if (io::loadPCDFile<PointT>(ss2.str(), *cloud) == -1)
+			{
+				PCL_ERROR("Couldnt read file.\n");
+			}
+
+			// Create the filtering object: downsample the dataset using a leaf size of 1cm
+			VoxelGrid<PointT> vg;
+			vg.setInputCloud(cloud);
+			vg.setFilterFieldName("z");
+			vg.setFilterLimits(0.0, 2.1);
+			vg.setLeafSize(0.01f, 0.01f, 0.01f);
+			vg.filter(*cloud_filtered);
+
+			cout << "PointCloud after filtering has: " << cloud_filtered->points.size() << " data points." << endl;
+			cout << "Extracting clusters." << endl;
+
+			// Creating the KdTree object for the search method of the extraction
+			search::KdTree<PointT>::Ptr tree(new search::KdTree<PointT>);
+			tree->setInputCloud(cloud_filtered);
+
+
+			EuclideanClusterExtraction<PointT> ec;
+			ec.setClusterTolerance(0.10); // 2cm
+			ec.setMinClusterSize(50);
+			ec.setMaxClusterSize(25000);
+			ec.setSearchMethod(tree);
+			ec.setInputCloud(cloud_filtered);
+			ec.extract(cluster_indices);
+
+			cout << "Clusters extracted." << endl;
+			cout << "Saving individual clusters." << endl;
+
+			PointT minmax2f[100];
+
+			int j = 0;
+			int vector_it = 0;
+			for (vector<PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it)//iterates through all the clusters stored in vector
+			{
+				cout << "entered 'FOR' loop with iteration being " << j << "." << endl;
+				PointCloud<PointT>::Ptr cloud_cluster(new PointCloud<PointT>);
+				//PointCloudT::Ptr minmaxpoints(new PointCloudT);
+				PointT min, max;
+				for (vector<int>::const_iterator pit = it->indices.begin(); pit != it->indices.end(); ++pit) //iterates through all points in a cluster
+					cloud_cluster->points.push_back(cloud_filtered->points[*pit]); //adds each point of the cluster at the end of the point cloud vector
+				cloud_cluster->width = cloud_cluster->points.size();
+				cloud_cluster->height = 1;
+				cloud_cluster->is_dense = true; //no points are invalid
+
+				getMinMax3D(*cloud_cluster, min, max);
+				/*minmaxpoints->points.push_back(min);
+				minmaxpoints->points.push_back(max);
+				minmaxpoints->width = minmaxpoints->points.size();
+				minmaxpoints->height = 1;
+				minmaxpoints->is_dense = true;*/ //no points are invalid
+				minmax2f[vector_it] = min;
+				minmax2f[vector_it + 1] = max;
+				
+
+				cout << "PointCloud representing the Cluster: " << cloud_cluster->points.size() << " data points." << endl;
+				stringstream ss;
+				ss << "cluster_" << j << ".pcd";
+				io::savePCDFileBinary(ss.str(), *cloud_cluster); //saves the cloud of the current cluster
+				j++;
+				vector_it += 2;
+			}
+
+			PointCloudT::Ptr new_cloud(new PointCloudT);
+			
+			int point_counter = 1;
+			cout << "Adding boxes around detected clusters." << endl;
+			for (int it = 0; it < 2 * j; it += 2)
+			{
+				PointT minpoint = minmax2f[it];
+				PointT maxpoint = minmax2f[it + 1];
+				
+				//cout << "Cluster " << it/2 << " min point is " << minpoint << ", and max point is " << maxpoint << endl;
+				for (double x = minpoint.x; x <= maxpoint.x; x += 0.02)
+				{
+					for (double z = minpoint.z; z <= maxpoint.z; z += 0.02)
+					{
+						point_counter++;
+					}
+				}
+				
+			}
+
+			cout << "Total number of points needed is " << point_counter << endl;
+			new_cloud->width = point_counter;
+			new_cloud->height = 1;
+			new_cloud->is_dense = true; //no points are invalid
+			new_cloud->resize(new_cloud->width * new_cloud->height);
+
+			int curr_point = 1;
+			for (int it = 0; it < 2 * j; it += 2)
+			{
+				PointT minpoint = minmax2f[it];
+				PointT maxpoint = minmax2f[it + 1];
+
+				cout << "Cluster " << it / 2 << " min point is " << minpoint << ", and max point is " << maxpoint << endl;
+				for (double x = minpoint.x; x <= maxpoint.x; x += 0.02)
+				{
+					for (double z = minpoint.z; z <= maxpoint.z; z += 0.02)
+					{
+						cout << x << "," << z << "," << curr_point;
+
+						new_cloud->points[curr_point].x = x;
+						cout << "x set to " << x << endl;
+						new_cloud->points[curr_point].y = minpoint.y;
+						cout << "y set to " << minpoint.y << endl;
+						new_cloud->points[curr_point].z = z;
+						cout << "z set to " << z << endl;
+						new_cloud->points[curr_point].r = 255;
+						cout << "r set to 255" << endl;
+						new_cloud->points[curr_point].g = 30;
+						cout << "g set to 30" << endl;
+						new_cloud->points[curr_point].b = 30;
+						cout << "b set to 30" << endl;
+						new_cloud->points[curr_point].a = 255;
+						cout << "a set to 255" << endl;
+
+						++curr_point;
+						cout << "point counter incremented to " << curr_point << endl;
+					}
+				}
+			}
+			
+
+			visualization::PCLVisualizer viewer("Cloud Viewer");
+			viewer.addPointCloud(new_cloud, "Cloud");
+			viewer.spin();
+
+			break;
+		}
+		case 18:
+		{
+			Colour_Filter col_filt;
+			col_filt.run();
+
+
 
 			break;
 		}

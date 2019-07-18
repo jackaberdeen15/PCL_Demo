@@ -21,6 +21,8 @@
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/console/time.h>   // TicToc
 #include <pcl/filters/statistical_outlier_removal.h>
+#include <pcl/tracking/hsv_color_coherence.h>
+#include <pcl/point_types_conversion.h>
 
 //custom headers
 #include <C:\Users\Jack\source\repos\pcl_visualizer\build\Useful_Functions.h>
@@ -31,6 +33,12 @@ using namespace chrono_literals;
 //using namespace io;
 
 typedef PointXYZRGBA T;
+typedef PointCloud<T> PointCloudT;
+typedef PointXYZHSV HSV;
+typedef PointCloud<HSV> PointCloudHSV;
+
+bool first_loop = true;
+
 
 //simply displays distance and fps to cmd window
 class BasicGrabber
@@ -122,8 +130,16 @@ private:
 		cout << "Converting cloud into Voxel Grid." << endl;
 		timer.tic();
 		PointCloudT::Ptr cloud_filtered(new PointCloudT);
+		PointCloudT::Ptr cloud_filtered2(new PointCloudT);
 
 		cout << "Point Cloud before filtering: " << cloud->width * cloud->height << " data points (" << getFieldsList(*cloud) << ")." << endl;
+
+		PassThrough<PointT> pass;
+		pass.setInputCloud(cloud);
+		pass.setFilterFieldName("z");
+		pass.setFilterLimits(0.0, 2.0);
+		pass.filter(*cloud_filtered2);
+
 
 		VoxelGrid<PointT> vxl;
 		vxl.setInputCloud(cloud);
@@ -192,6 +208,155 @@ public:
 	}
 	
 	visualization::CloudViewer viewer;
+
+};
+
+//displays cloud to viewer, also distance and fps to cmd window
+class Colour_Filter
+{
+private:
+	int num_s1 = 0;
+
+	console::TicToc timer;
+	
+	void cloud_cb_(const PointCloud<T>::ConstPtr &cloud)
+	{
+		cout << "\n\nEntered callback 'View' " << endl;
+
+		PointCloudT::Ptr cloud_filtered(new PointCloudT);
+		PointCloudHSV::Ptr cloud_hsv(new PointCloudHSV);
+
+
+		cout << "Filtering loud by distance (0-2m)." << endl;
+		timer.tic();
+		PassThrough<T> pass;
+		pass.setInputCloud(cloud);
+		pass.setFilterFieldName("z");
+		pass.setFilterLimits(0.0, 2.0);
+		pass.filter(*cloud_filtered);
+		cout << "Cloud filtered in " << timer.toc() << "ms." << endl;
+
+		cout << "Converting from RGBA to HSV." << endl;
+		timer.tic();
+
+		//copyPointCloud(*cloud_filtered, *cloud_hsv);
+		PointCloudXYZRGBAtoXYZHSV(*cloud_filtered, *cloud_hsv);
+		
+		cout << "Time taken to convert was " << timer.toc() << "ms." << endl;
+
+		cout << "Starting Colour Filtering.\nSize of unfiltered cloud is " << cloud_hsv->size() << endl;
+		timer.tic();
+
+		PointCloudHSV::Ptr cloud_hsv_filtered(new PointCloudHSV);
+
+		short h_upr_lim = 260;
+		short h_lwr_lim = 220;
+		double saturation = 0.5;
+		double value = 0.5;
+
+		int point_counter = 0;
+		//tracking::HSVColorCoherence colcoh;
+		for (int i = 0; i < cloud_hsv->size(); ++i)
+		{
+			if (cloud_hsv->points[i].s <= saturation && cloud_hsv->points[i].v <= value)
+			{
+				if (cloud_hsv->points[i].h >= h_lwr_lim && cloud_hsv->points[i].h < h_upr_lim)
+				{
+					cloud_hsv_filtered->points.push_back(cloud_hsv->points[i]);
+					point_counter++;
+				}
+			}
+		}
+		cloud_hsv_filtered->width = cloud_hsv_filtered->size();
+		cloud_hsv_filtered->height = 1;
+		cloud_hsv_filtered->resize(cloud_hsv_filtered->width * cloud_hsv_filtered->height);
+		cout << "Colour filtering completed in " << timer.toc() << "ms.\nSize of filtered Cloud is " << cloud_hsv_filtered->size() << endl;
+
+		cloud_hsv_filtered->width = point_counter;
+		cloud_hsv_filtered->resize(cloud_hsv_filtered->width * cloud_hsv_filtered->height);
+
+		PointCloud<PointXYZRGB>::Ptr final_cloud(new PointCloud<PointXYZRGB>);
+		
+
+		cout << "Converting back to RGBA." << endl;
+		timer.tic();
+
+		for (int i = 0; i < cloud_hsv_filtered->size(); ++i)
+		{
+			PointXYZRGB temp_point;
+
+			PointXYZHSVtoXYZRGB(cloud_hsv_filtered->points[i], temp_point);
+			//cout << "Temp point : " << temp_point << endl;
+			final_cloud->points.push_back(temp_point);
+		}
+
+		final_cloud->width = final_cloud->size();
+		final_cloud->height = 1;
+		final_cloud->resize(final_cloud->width * final_cloud->height);
+		
+		cout << "Cloud converted in " << timer.toc() << "ms.\Size of final cloud is " << final_cloud->size() << endl;
+
+		if (!viewer.wasStopped())
+		{
+			/*if (first_loop == true)
+			{
+				cout << "First Loop." << endl;
+				first_loop = false;
+				viewer.addPointCloud(cloud_filtered, "HSV Cloud");
+			}
+			else
+			{
+				cout << "not first loop." << endl;
+				viewer.updatePointCloud(cloud_filtered);
+			}
+			cout << "spinning." << endl;
+			viewer.spinOnce();*/
+			viewer.showCloud(final_cloud);
+		}
+			
+		
+	}
+
+public:
+	Colour_Filter() : viewer("PCL OpenNI Viewer") {}
+	
+	int run()
+	{
+		cout << "Entered run()." << endl;
+
+		//create new grabber
+		Grabber* interface = new io::OpenNI2Grabber();
+
+		cout << "setting up callbacks." << endl;
+		//make callback function from member function
+		boost::function<void(const PointCloud<T>::ConstPtr&) > f = boost::bind(&Colour_Filter::cloud_cb_, this, _1);
+
+		//boost::function<void(const PointCloud<T>::ConstPtr&) > f_save = boost::bind(&BasicOpenNI2Processor::save_cloud, this, _1);
+
+		cout << "registering callbacks." << endl;
+		//connect callback function for desired signal
+		boost::signals2::connection c = interface->registerCallback(f);
+
+		//boost::signals2::connection c_save = interface->registerCallback(f_save);
+
+		//boost::signals2::connection c_save2 = interface->
+		cout << "starting interface" << endl;
+		//start recieving point clouds
+		interface->start();
+
+		//wait until user quits with ctrl
+		while (!viewer.wasStopped()) { boost::this_thread::sleep(boost::posix_time::seconds(1)); }
+
+		//stop the grabber
+		interface->stop();
+
+		return num_s1;
+	}
+
+	visualization::CloudViewer viewer;
+
+	//visualization::PCLVisualizer viewer;
+	
 
 };
 
