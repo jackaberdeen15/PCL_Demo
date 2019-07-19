@@ -23,6 +23,7 @@
 #include <pcl/filters/statistical_outlier_removal.h>
 #include <pcl/tracking/hsv_color_coherence.h>
 #include <pcl/point_types_conversion.h>
+#include <pcl>
 
 //custom headers
 #include <C:\Users\Jack\source\repos\pcl_visualizer\build\Useful_Functions.h>
@@ -36,6 +37,8 @@ typedef PointXYZRGBA T;
 typedef PointCloud<T> PointCloudT;
 typedef PointXYZHSV HSV;
 typedef PointCloud<HSV> PointCloudHSV;
+typedef PointXYZRGB PointRGB;
+typedef PointCloud<PointRGB> PointCloudRGB;
 
 bool first_loop = true;
 
@@ -250,15 +253,15 @@ private:
 		PointCloudHSV::Ptr cloud_hsv_filtered(new PointCloudHSV);
 
 		short h_upr_lim = 260;
-		short h_lwr_lim = 220;
-		double saturation = 0.5;
-		double value = 0.5;
+		short h_lwr_lim = 200;
+		double saturation_min = 0.2;
+		double value_min = 0.2;
 
 		int point_counter = 0;
 		//tracking::HSVColorCoherence colcoh;
 		for (int i = 0; i < cloud_hsv->size(); ++i)
 		{
-			if (cloud_hsv->points[i].s <= saturation && cloud_hsv->points[i].v <= value)
+			if (cloud_hsv->points[i].s >= saturation_min && cloud_hsv->points[i].v >= value_min)
 			{
 				if (cloud_hsv->points[i].h >= h_lwr_lim && cloud_hsv->points[i].h < h_upr_lim)
 				{
@@ -275,7 +278,7 @@ private:
 		cloud_hsv_filtered->width = point_counter;
 		cloud_hsv_filtered->resize(cloud_hsv_filtered->width * cloud_hsv_filtered->height);
 
-		PointCloud<PointXYZRGB>::Ptr final_cloud(new PointCloud<PointXYZRGB>);
+		PointCloudRGB::Ptr cloud_init_RGB(new PointCloudRGB);
 		
 
 		cout << "Converting back to RGBA." << endl;
@@ -287,14 +290,27 @@ private:
 
 			PointXYZHSVtoXYZRGB(cloud_hsv_filtered->points[i], temp_point);
 			//cout << "Temp point : " << temp_point << endl;
-			final_cloud->points.push_back(temp_point);
+			cloud_init_RGB->points.push_back(temp_point);
 		}
 
-		final_cloud->width = final_cloud->size();
-		final_cloud->height = 1;
-		final_cloud->resize(final_cloud->width * final_cloud->height);
+		cloud_init_RGB->width = cloud_init_RGB->size();
+		cloud_init_RGB->height = 1;
+		cloud_init_RGB->resize(cloud_init_RGB->width * cloud_init_RGB->height);
 		
-		cout << "Cloud converted in " << timer.toc() << "ms.\Size of final cloud is " << final_cloud->size() << endl;
+		cout << "Cloud converted in " << timer.toc() << "ms.\nSize of final cloud is " << cloud_init_RGB->size() << endl;
+
+		cout << "Detecting all circles in filtered image." << endl;
+
+		int i = 0, nr_points = cloud_init_RGB->size();
+		while (cloud_init_RGB->size() > 0.2*nr_points)
+		{
+
+
+
+
+		}
+
+
 
 		if (!viewer.wasStopped())
 		{
@@ -311,7 +327,7 @@ private:
 			}
 			cout << "spinning." << endl;
 			viewer.spinOnce();*/
-			viewer.showCloud(final_cloud);
+			viewer.showCloud(cloud_init_RGB);
 		}
 			
 		
