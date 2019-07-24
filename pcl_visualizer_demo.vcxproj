@@ -334,6 +334,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="ColourBasedRegionSegmentation.h" />
     <ClInclude Include="CustomPointTypes.h" />
     <ClInclude Include="ICP_Header.h" />
+    <ClInclude Include="Sphere_Detector_components.h" />
     <ClInclude Include="Useful_Functions.h" />
     <ClInclude Include="VisualiserAttempt.h" />
   </ItemGroup>

@@ -85,14 +85,15 @@ int main(int argc, char** argv[])
 		cout << "8:  Euclidean Cluster Extraction." << endl;
 		cout << "9:  Transformation practice." << endl;
 		cout << "10: Get the centroid of a cluster." << endl;
-		cout << "11: imple matrix rotation." << endl;
+		cout << "11: Simple matrix rotation." << endl;
 		cout << "12: Insert cube into a cloud." << endl;
 		cout << "13: Align 8 Clouds." << endl;
 		cout << "14: Creating a square outline in a cloud." << endl;
 		cout << "15: Surface smoothing." << endl;
 		cout << "16: Voxelise a cloud." << endl;
 		cout << "17: Add boudning boxes" << endl;
-		cout << "18: Colour Filtering." << endl;
+		cout << "18: Colour Filtering with Sphere." << endl;
+		cout << "19: Colour Filtering Circles." << endl;
 		cout << "0:  Exit Program." << endl;
 
 		short choice;
@@ -1549,26 +1550,29 @@ int main(int argc, char** argv[])
 						cout << x << "," << z << "," << curr_point;
 
 						new_cloud->points[curr_point].x = x;
-						cout << "x set to " << x << endl;
+						//cout << "x set to " << x << endl;
 						new_cloud->points[curr_point].y = minpoint.y;
-						cout << "y set to " << minpoint.y << endl;
+						//cout << "y set to " << minpoint.y << endl;
 						new_cloud->points[curr_point].z = z;
-						cout << "z set to " << z << endl;
+						//cout << "z set to " << z << endl;
 						new_cloud->points[curr_point].r = 255;
-						cout << "r set to 255" << endl;
+						//cout << "r set to 255" << endl;
 						new_cloud->points[curr_point].g = 30;
-						cout << "g set to 30" << endl;
+						//cout << "g set to 30" << endl;
 						new_cloud->points[curr_point].b = 30;
-						cout << "b set to 30" << endl;
+						//cout << "b set to 30" << endl;
 						new_cloud->points[curr_point].a = 255;
-						cout << "a set to 255" << endl;
+						//cout << "a set to 255" << endl;
 
 						++curr_point;
-						cout << "point counter incremented to " << curr_point << endl;
+						//cout << "point counter incremented to " << curr_point << endl;
 					}
 				}
 			}
-			
+			PointCloudT::Ptr final_cloud(new PointCloudT);
+
+			*final_cloud = *cloud;
+			*final_cloud += *new_cloud;
 
 			visualization::PCLVisualizer viewer("Cloud Viewer");
 			viewer.addPointCloud(new_cloud, "Cloud");
@@ -1578,10 +1582,15 @@ int main(int argc, char** argv[])
 		}
 		case 18:
 		{
-			Colour_Filter col_filt;
+			Colour_Filter_Sphere col_filt;
 			col_filt.run();
-
-
+			
+			break;
+		}
+		case 19:
+		{
+			Colour_Filter_Circles col_filt;
+			col_filt.run();
 
 			break;
 		}
