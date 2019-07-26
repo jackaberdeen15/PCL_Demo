@@ -221,9 +221,10 @@ class Colour_Filter_Sphere
 {
 private:
 	int num_s1 = 0;
-	bool first_loop = true;
+	bool object_located = false;
 	PointXYZ previous_centroid;
 	float search_size = 0.25;
+	int lost_counter = 0;
 
 	console::TicToc timer;
 	
@@ -234,7 +235,7 @@ private:
 		PointCloudT::Ptr cloud_filtered(new PointCloudT);
 		PointCloudHSV::Ptr cloud_hsv(new PointCloudHSV);
 
-		if (first_loop == true)
+		if (object_located == false)
 		{
 			cout << "First loop. Filtering loud by distance (0-2m)." << endl;
 			timer.tic();
@@ -243,8 +244,7 @@ private:
 			pass.setFilterFieldName("z");
 			pass.setFilterLimits(0.0, 2.0);
 			pass.filter(*cloud_filtered);
-			
-			first_loop = false;
+
 		}
 		else
 		{
@@ -277,39 +277,96 @@ private:
 
 		//copyPointCloud(*cloud_filtered, *cloud_hsv);
 		PointCloudXYZRGBAtoXYZHSV(*cloud_filtered, *cloud_hsv);
-		
+
 		cout << "Time taken to convert was " << timer.toc() << "ms." << endl;
 
 		cout << "Starting Colour Filtering.\nSize of unfiltered cloud is " << cloud_hsv->size() << endl;
 		timer.tic();
 
 		PointCloudHSV::Ptr cloud_hsv_filtered(new PointCloudHSV);
+		PointCloudHSV::Ptr blue_cloud(new PointCloudHSV);
+		/*PointCloudHSV::Ptr green_cloud(new PointCloudHSV);
+		PointCloudHSV::Ptr yellow_cloud(new PointCloudHSV);
+		PointCloudHSV::Ptr pink_cloud(new PointCloudHSV);*/
 
-		short h_upr_lim = 260;
-		short h_lwr_lim = 200;
-		double saturation_min = 0.2;
-		double value_min = 0.2;
 
-		
+		short blue_h_upr_lim = 299;
+		short blue_h_lwr_lim = 239;
+		/*short green_h_upr_lim = 180;
+		short green_h_lwr_lim = 120;
+		short yellow_h_upr_lim = 119;
+		short yellow_h_lwr_lim = 60;
+		short pink_h_upr_lim = 359;
+		short pink_h_lwr_lim = 300;*/
+
+		double saturation_min = 0.4;
+		double value_min = 0.4;
+
 		//tracking::HSVColorCoherence colcoh;
 		for (int i = 0; i < cloud_hsv->size(); ++i)
 		{
 			if (cloud_hsv->points[i].s >= saturation_min && cloud_hsv->points[i].v >= value_min)
 			{
-				if (cloud_hsv->points[i].h >= h_lwr_lim && cloud_hsv->points[i].h < h_upr_lim)
+				if (cloud_hsv->points[i].h >= blue_h_lwr_lim && cloud_hsv->points[i].h < blue_h_upr_lim)
 				{
-					cloud_hsv_filtered->points.push_back(cloud_hsv->points[i]);
+					blue_cloud->points.push_back(cloud_hsv->points[i]);
 				}
+				/*else if (cloud_hsv->points[i].h >= green_h_lwr_lim && cloud_hsv->points[i].h < green_h_upr_lim)
+				{
+					green_cloud->points.push_back(cloud_hsv->points[i]);
+				}
+				else if (cloud_hsv->points[i].h >= yellow_h_lwr_lim && cloud_hsv->points[i].h < yellow_h_upr_lim)
+				{
+					yellow_cloud->points.push_back(cloud_hsv->points[i]);
+				}
+				else if (cloud_hsv->points[i].h >= pink_h_lwr_lim && cloud_hsv->points[i].h < pink_h_upr_lim)
+				{
+					pink_cloud->points.push_back(cloud_hsv->points[i]);
+				}*/
 			}
 		}
+		//cout << "Blue cloud has " << blue_cloud->size() << " points." << endl;
+		//cout << "Green cloud has " << green_cloud->size() << " points." << endl;
+		//cout << "Yellow cloud has " << yellow_cloud->size() << " points." << endl;
+		//cout << "Pink cloud has " << pink_cloud->size() << " points." << endl;
+
+		int blue = blue_cloud->size();
+		/*int green = green_cloud->size();
+		int yellow = yellow_cloud->size();
+		int pink = pink_cloud->size();*/
+
+		*cloud_hsv_filtered = *blue_cloud;
+
+		/*if (blue > green&&blue > yellow&&blue > pink)
+		{
+			*cloud_hsv_filtered = *blue_cloud;
+			cout << "Blue cloud is largest with " << blue_cloud->size() << " points." << endl;
+		}
+		else if (green > yellow && green > pink)
+		{
+			*cloud_hsv_filtered = *green_cloud;
+			cout << "Green cloud is largest with " << green_cloud->size() << " points." << endl;
+		}
+		else if (yellow > pink)
+		{
+			*cloud_hsv_filtered = *yellow_cloud;
+			cout << "Yellow cloud is largest with " << yellow_cloud->size() << " points." << endl;
+		}
+		else
+		{
+			*cloud_hsv_filtered = *pink_cloud;
+			cout << "Pink cloud is largest with " << pink_cloud->size() << " points." << endl;
+		}*/
+
+
+
 		cloud_hsv_filtered->width = cloud_hsv_filtered->size();
 		cloud_hsv_filtered->height = 1;
 		cloud_hsv_filtered->resize(cloud_hsv_filtered->width * cloud_hsv_filtered->height);
 		cout << "Colour filtering completed in " << timer.toc() << "ms.\nSize of filtered Cloud is " << cloud_hsv_filtered->size() << endl;
-		
 
 		PointCloudRGB::Ptr cloud_init_RGB(new PointCloudRGB);
-		
+
 
 		cout << "Converting back to RGBA." << endl;
 		timer.tic();
@@ -326,7 +383,7 @@ private:
 		cloud_init_RGB->width = cloud_init_RGB->size();
 		cloud_init_RGB->height = 1;
 		cloud_init_RGB->resize(cloud_init_RGB->width * cloud_init_RGB->height);
-		
+
 		cout << "Cloud converted in " << timer.toc() << "ms.\nSize of final cloud is " << cloud_init_RGB->size() << endl;
 
 		cout << "Detecting all circles in filtered image." << endl;
@@ -350,19 +407,19 @@ private:
 
 		// Compute the features
 		ne.compute(*cloud_normals);
-		
+
 		cout << "Normals computed in " << timer.toc() << "ms." << endl;
-		
+
 		cout << "Performing RANSAC to find spheres." << endl;
 		timer.tic();
-		PointIndices sphere_indices;
+		PointIndices circle_indices;
 		ModelCoefficients::Ptr coefficients(new ModelCoefficients);
 		SACSegmentationFromNormals<PointRGB, Normal> segmentation;
 
 		segmentation.setInputCloud(cloud_init_RGB);
 		segmentation.setInputNormals(cloud_normals);
 		segmentation.setModelType(SACMODEL_SPHERE);
-		//segmentation.setModelType(SACMODEL_CIRCLE2D);
+		//segmentation.setModelType(SACMODEL_CIRCLE3D);
 		segmentation.setMethodType(SAC_RANSAC);
 		segmentation.setDistanceThreshold(0.01);
 		segmentation.setOptimizeCoefficients(true);
@@ -370,36 +427,43 @@ private:
 		segmentation.setEpsAngle(15 / (180 / 3.141592654));
 		segmentation.setMaxIterations(40);
 
-		segmentation.segment(sphere_indices, *coefficients);
-		
-		CentroidPoint<PointRGB> centroid;
-		
+		segmentation.segment(circle_indices, *coefficients);
 
-		if (sphere_indices.indices.size() == 0)
+		CentroidPoint<PointRGB> centroid;
+
+
+		if (circle_indices.indices.size() == 0)
 		{
 			cout << "No Sphere was deteted with RANSAC. " << timer.toc() << "ms elapsed." << endl;
+			lost_counter++;
+			if (lost_counter > 10)
+			{
+				object_located = false;
+			}
 		}
 		else
 		{
-			cout << "RANSAC detected a sphere with " << sphere_indices.indices.size() << " points. " << timer.toc() << "ms elapsed." << endl;
-			for (int i = 0; i < sphere_indices.indices.size(); ++i)
+			cout << "RANSAC detected a circles with " << circle_indices.indices.size() << " points. " << timer.toc() << "ms elapsed." << endl;
+			for (int i = 0; i < circle_indices.indices.size(); ++i)
 			{
-				cloud_init_RGB->points[sphere_indices.indices[i]].r = 0;
-				cloud_init_RGB->points[sphere_indices.indices[i]].g = 255;
-				cloud_init_RGB->points[sphere_indices.indices[i]].b = 0;
+				cloud_init_RGB->points[circle_indices.indices[i]].r = 0;
+				cloud_init_RGB->points[circle_indices.indices[i]].g = 255;
+				cloud_init_RGB->points[circle_indices.indices[i]].b = 0;
 
-				centroid.add(cloud_init_RGB->points[i]);
+				centroid.add(cloud_init_RGB->points[circle_indices.indices[i]]);
 			}
 			PointXYZ sphere_centroid;
 			centroid.get(sphere_centroid);
 
 			cout << "Centroid of the sphere is " << sphere_centroid << "." << endl;
 			previous_centroid = sphere_centroid;
+
+			object_located = true;;
 		}
 
 		int index;
 		PointCloudRGB border;
-			
+
 		for (double x = previous_centroid.x - search_size; x <= previous_centroid.x + search_size; x += 0.01)
 		{
 			for (double y = previous_centroid.y - search_size; y <= previous_centroid.y + search_size; y += 0.01)
@@ -428,8 +492,8 @@ private:
 		{
 			viewer.showCloud(cloud_init_RGB);
 		}
-			
-		
+
+
 	}
 
 public:
@@ -707,7 +771,7 @@ private:
 				cloud_init_RGB->points[circle_indices.indices[i]].g = 255;
 				cloud_init_RGB->points[circle_indices.indices[i]].b = 0;
 
-				centroid.add(cloud_init_RGB->points[i]);
+				centroid.add(cloud_init_RGB->points[circle_indices.indices[i]]);
 			}
 			PointXYZ circle_centroid;
 			centroid.get(circle_centroid);

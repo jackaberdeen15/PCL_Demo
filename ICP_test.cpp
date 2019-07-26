@@ -1466,7 +1466,7 @@ int main(int argc, char** argv[])
 
 
 			EuclideanClusterExtraction<PointT> ec;
-			ec.setClusterTolerance(0.10); // 2cm
+			ec.setClusterTolerance(0.03); // 2cm
 			ec.setMinClusterSize(50);
 			ec.setMaxClusterSize(25000);
 			ec.setSearchMethod(tree);
@@ -1542,12 +1542,12 @@ int main(int argc, char** argv[])
 				PointT minpoint = minmax2f[it];
 				PointT maxpoint = minmax2f[it + 1];
 
-				cout << "Cluster " << it / 2 << " min point is " << minpoint << ", and max point is " << maxpoint << endl;
+				//cout << "Cluster " << it / 2 << " min point is " << minpoint << ", and max point is " << maxpoint << endl;
 				for (double x = minpoint.x; x <= maxpoint.x; x += 0.02)
 				{
 					for (double z = minpoint.z; z <= maxpoint.z; z += 0.02)
 					{
-						cout << x << "," << z << "," << curr_point;
+						//cout << x << "," << z << "," << curr_point;
 
 						new_cloud->points[curr_point].x = x;
 						//cout << "x set to " << x << endl;
@@ -1575,7 +1575,7 @@ int main(int argc, char** argv[])
 			*final_cloud += *new_cloud;
 
 			visualization::PCLVisualizer viewer("Cloud Viewer");
-			viewer.addPointCloud(new_cloud, "Cloud");
+			viewer.addPointCloud(final_cloud, "Cloud");
 			viewer.spin();
 
 			break;
